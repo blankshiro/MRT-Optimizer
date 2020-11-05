@@ -1,23 +1,24 @@
 package datastructure;
 
 /**
- * Edges connecting the train stations
+ * Edges connecting the train stations.
  */
 public class Edge {
-    private final String id;
     private final Vertex fromStation;
     private final Vertex toStation;
     private final int distance;
 
-    public Edge(String id, Vertex fromStation, Vertex toStation, int distance) {
-        this.id = id;
+    /**
+     * Represents the edge connecting two train stations.
+     * 
+     * @param fromStation From MRT station.
+     * @param toStation To MRT station.
+     * @param distance Distance between the two MRT stations.
+     */
+    public Edge(Vertex fromStation, Vertex toStation, int distance) {
         this.fromStation = fromStation;
         this.toStation  = toStation;
         this.distance = distance;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public Vertex getFromStation() {
@@ -30,5 +31,13 @@ public class Edge {
 
     public int getDistance() {
         return distance;
+    }
+
+    public Vertex getNeighborIndex(Vertex trainStation) {
+        if (this.fromStation == trainStation) {
+            return this.toStation;
+        } else {
+            return this.fromStation;
+        }
     }
 }

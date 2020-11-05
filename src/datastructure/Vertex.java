@@ -1,21 +1,26 @@
 package datastructure;
 
+import java.util.LinkedList;
 /**
- * Train station
+ * Train station. For every train station there might be multiple edges (AKA connections to other train stations).
  */
 public class Vertex {
-    private final String stationCode;
-    private final String stationName;
-    private final String lineColor;
-    public final int timeStoppedAtStation;
-    private final int peakWaitingTime = 5;
-    private final int nonPeakWaitingTime = 3;
+    private String stationCode;
+    private String stationName;
+    private String lineColor;
+    public int timeStoppedAtStation;
+    private int peakWaitingTime = 5;
+    private int nonPeakWaitingTime = 3;
+    private boolean visited;
+    LinkedList<Edge> edges;
 
     public Vertex(String stationName, String stationCode, String lineColor, int timeStoppedAtStation) {
         this.stationName = stationName;
         this.stationCode = stationCode;
         this.lineColor = lineColor;
         this.timeStoppedAtStation = timeStoppedAtStation;
+        visited = false;
+        edges = new LinkedList<>();
     }
 
     public String getStationName() {
@@ -42,4 +47,11 @@ public class Vertex {
         return nonPeakWaitingTime;
     }
 
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
 }
