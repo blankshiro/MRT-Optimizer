@@ -5,11 +5,11 @@ package datastructure;
  */
 public class Edge {
     private final String id;
-    private final Vertex fromStation;
-    private final Vertex toStation;
+    private final Station fromStation;
+    private final Station toStation;
     private final int distance;
 
-    public Edge(String id, Vertex fromStation, Vertex toStation, int distance) {
+    public Edge(String id, Station fromStation, Station toStation, int distance) {
         this.id = id;
         this.fromStation = fromStation;
         this.toStation  = toStation;
