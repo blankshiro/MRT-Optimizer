@@ -1,7 +1,7 @@
-// package datastructure;
+package app;
 
 import java.util.*;
-// import datastructure.*;
+import datastructure.*;
 
 public class App {
     public static void main(String args[]) {
@@ -9,21 +9,28 @@ public class App {
         HashMap<String, List<Station>> adjMap = DataUtilities.createAdjMap();
         int numOfStations = adjMap.size();
 
-        String start = "NE15";
-        String end = "DT11";
+        System.out.println("== MRT Train Optimizer ==");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the starting MRT code: ");
+        String start = sc.nextLine();
+        System.out.print("Enter the destination MRT code:");
+        String end = sc.nextLine();
+
+        //String start = "NE15";
+        //String end = "DT11";
 
         Graph network = new Graph(numOfStations);
         network.solve(adjMap, start);
-
         printPath(network, start, end);
-
-        // printTimeToAllStations(Graph network, String start);
+        //printTimeToAllStations(network, start);
     }
 
     public static void printPath(Graph network, String start, String end) {
-        if (network.getParentMap().get(end) == null) return;
-        
+        if (network.getParentMap().get(end) == null)
+            return;
+
         printPath(network, start, network.getParentMap().get(end));
+
         System.out.println(network.getParentMap().get(end));
     }
 
