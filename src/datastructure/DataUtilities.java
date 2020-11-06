@@ -1,8 +1,7 @@
-// package datastructure;
+package datastructure;
 
 import java.util.*;
 import java.io.*;
-import datastructure.*;
 
 public class DataUtilities {
     public static HashMap<String, Integer> createMapCode() {
@@ -11,7 +10,7 @@ public class DataUtilities {
         m.put("DT1", 0);
         m.put("DT2", 1);
         m.put("DT3", 2);
-        //No DT4
+        // No DT4
         m.put("DT5", 4);
         m.put("DT6", 5);
         m.put("DT7", 6);
@@ -42,8 +41,8 @@ public class DataUtilities {
         m.put("DT32", 31);
         m.put("DT33", 32);
         m.put("DT34", 33);
-        m.put("DT35", 34);	
-        //Circle line
+        m.put("DT35", 34);
+        // Circle line
         m.put("CC1", 35);
         m.put("CC2", 36);
         m.put("CC3", 37);
@@ -61,7 +60,7 @@ public class DataUtilities {
         m.put("CC15", 49);
         m.put("CC16", 50);
         m.put("CC17", 51);
-        //No CC18
+        // No CC18
         m.put("CC19", 52);
         m.put("CC20", 53);
         m.put("CC21", 54);
@@ -75,7 +74,7 @@ public class DataUtilities {
         m.put("CC29", 62);
         m.put("CE1", 63);
         m.put("CE2", 64);
-        //East West Line
+        // East West Line
         m.put("EW1", 65);
         m.put("EW2", 66);
         m.put("EW3", 67);
@@ -104,10 +103,10 @@ public class DataUtilities {
         m.put("EW26", 90);
         m.put("EW27", 91);
         m.put("EW28", 92);
-        m.put("EW29", 93);//94 to 97
-        //North East Line
+        m.put("EW29", 93);// 94 to 97
+        // North East Line
         m.put("NE1", 98);
-        //no NE2
+        // no NE2
         m.put("NE3", 99);
         m.put("NE4", 100);
         m.put("NE5", 101);
@@ -122,8 +121,8 @@ public class DataUtilities {
         m.put("NE14", 110);
         m.put("NE15", 111);
         m.put("NE16", 112);
-        m.put("NE17", 113); //114 to 123
-        //NS Line
+        m.put("NE17", 113); // 114 to 123
+        // NS Line
         m.put("NS1", 3);
         m.put("NS2", 124);
         m.put("NS3", 125);
@@ -134,7 +133,7 @@ public class DataUtilities {
         m.put("NS9", 130);
         m.put("NS10", 131);
         m.put("NS11", 132);
-        //m.put("NS12", 133); No NS12
+        // m.put("NS12", 133); No NS12
         m.put("NS13", 134);
         m.put("NS14", 135);
         m.put("NS15", 136);
@@ -151,8 +150,8 @@ public class DataUtilities {
         m.put("NS26", 118);
         m.put("NS27", 117);
         m.put("NS28", 116);
-        
-        //Changi Airport
+
+        // Changi Airport
         // m.put("CG", 115);
         m.put("CG1", 114);
         m.put("CG2", 133);
@@ -160,16 +159,28 @@ public class DataUtilities {
         return m;
     }
 
-    public static HashMap<String, List<Station>> createAdjMap()  {
+    /**
+     * Creates an adjacency map by reading the traveltime.txt file.
+     * 
+     * @return Adjacency map of the train stations.
+     */
+    public static HashMap<String, List<Station>> createAdjMap() {
+        // create a hashmap that stores the value of the current station and maps it to its adjacent stations (can be more than 1)
         HashMap<String, List<Station>> adjMap = new HashMap<String, List<Station>>();
-        try (Scanner sc = new Scanner(new File("traveltime.txt"));) {
+        try (Scanner sc = new Scanner(new File("C:/Users/User/Desktop/CS201G2T5/src/data/traveltime.txt"));) { // <-- Put the path to the traveltime.txt file
             while (sc.hasNext()) {
                 String[] arr = sc.nextLine().split(" ");
                 // System.out.println(Arrays.toString(arr));
+
+                // if the array is length of 3 and does not contain "//"
                 if (arr.length == 3 && !(arr[0].contains("//"))) {
+                    // create the next train station from arr[1] with the travel time at arr[2]
                     Station nextStation = new Station(arr[1], Integer.parseInt(arr[2]));
+                    // checks for the adjacent stations that is mapped from the current station (if any)
                     List<Station> adjacentStations = adjMap.getOrDefault(arr[0], new ArrayList<>());
+                    // add the next station to the list of adjacent stations
                     adjacentStations.add(nextStation);
+                    // put it into the hashmap
                     adjMap.put(arr[0], adjacentStations);
 
                     // add the opposite because undirected
@@ -187,6 +198,11 @@ public class DataUtilities {
         return adjMap;
     }
 
+    /**
+     * Prints the adjacency map of train stations.
+     * 
+     * @param adjMap The adjacency map to be printed.
+     */
     public static void printAdjacencyMap(HashMap<String, List<Station>> adjMap) {
         System.out.println("Adjacency Map:");
         for (Map.Entry<String, List<Station>> entry : adjMap.entrySet()) {
@@ -194,6 +210,11 @@ public class DataUtilities {
         }
     }
 
+    /**
+     * Prints the parent map of the train station.
+     * 
+     * @param parentMap The parent map to be printed.
+     */
     public static void printParentMap(HashMap<String, String> parentMap) {
         System.out.println("Parent Map:");
         for (Map.Entry<String, String> entry : parentMap.entrySet()) {
