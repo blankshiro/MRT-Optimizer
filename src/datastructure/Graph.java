@@ -97,6 +97,10 @@ public class Graph {
         }
     }
 
+    public int getNumOfStations() {
+        return numOfStations;
+    }
+
     /**
      * Getter method to get the dist map.
      * 

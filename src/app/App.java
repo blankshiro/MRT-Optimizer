@@ -16,13 +16,20 @@ public class App {
         System.out.print("Enter the destination MRT code:");
         String end = sc.nextLine();
 
-        //String start = "NE15";
-        //String end = "DT11";
+        // String start = "NE15";
+        // String end = "DT11";
 
         Graph network = new Graph(numOfStations);
-        network.solve(adjMap, start);
+
+        try {
+            network.solve(adjMap, start);
+        } catch (Exception e) {
+            System.out.println("Invalid station input");
+        }
+
+        
         printPath(network, start, end);
-        //printTimeToAllStations(network, start);
+        // printTimeToAllStations(network, start);
     }
 
     public static void printPath(Graph network, String start, String end) {
