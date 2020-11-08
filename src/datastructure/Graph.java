@@ -14,13 +14,13 @@ public class Graph {
     private PriorityQueue<Station> pq;
     /** HashMap to keep track of the time travelled. */
     private HashMap<String, Integer> distMap;
-
+    /** Second HashMap to keep track of the alternative time travelled. */
     private HashMap<String, Integer> distMap2;
     /** Graph of stations. */
     private HashMap<String, List<Station>> adjMap;
     /** HashMap to keep track of parents of the station. */
     private HashMap<String, String> parentMap;
-
+    /** Second HashMap to keep track of the parents of the station. */
     private HashMap<String, String> parentMap2;
 
     /**
@@ -123,6 +123,15 @@ public class Graph {
                 pq.add(new Station(neighbourCode, distMap.get(neighbourCode)));
             }
         }
+    }
+
+    /**
+     * Gets the number of MRT stations.
+     * 
+     * @return The number of MRT stations.
+     */
+    public int getNumOfStations() {
+        return numOfStations;
     }
 
     /**
