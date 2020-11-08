@@ -13,7 +13,8 @@ public class DataUtilities {
          * its adjacent stations (can be more than 1)
          */
         HashMap<String, List<Station>> adjMap = new HashMap<String, List<Station>>();
-        try (Scanner sc = new Scanner(new File("C:/Users/User/Desktop/CS201G2T5/src/data/traveltime.txt"));) {
+        try (Scanner sc = new Scanner(new File("../data/traveltime.txt"));) {
+
             while (sc.hasNext()) {
                 String[] arr = sc.nextLine().split(" ");
                 // System.out.println(Arrays.toString(arr));
