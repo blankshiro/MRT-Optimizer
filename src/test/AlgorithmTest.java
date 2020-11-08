@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AlgorithmTest {
 
-    HashMap<String, List<Station>> adjMapTest = DataUtilities.createAdjMap();
+    HashMap<String, List<Station>> adjMapTest = DataUtilities.createAdjMapTest();
     int numOfStationsTest = adjMapTest.size();
 
     Graph networkTest = new Graph(numOfStationsTest);

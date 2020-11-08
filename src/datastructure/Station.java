@@ -11,6 +11,7 @@ public class Station implements Comparator<Station> {
     /** The travel time from one MRT station to another. */
     private int travelTime;
 
+    /** Sole constructor. */
     public Station() {
     }
 

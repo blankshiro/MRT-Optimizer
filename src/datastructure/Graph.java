@@ -125,6 +125,11 @@ public class Graph {
         }
     }
 
+    /**
+     * Gets the number of MRT stations.
+     * 
+     * @return The number of MRT stations.
+     */
     public int getNumOfStations() {
         return numOfStations;
     }

@@ -53,6 +53,49 @@ public class DataUtilities {
     }
 
     /**
+     * For junit testing purposes.
+     */
+    public static HashMap<String, List<Station>> createAdjMapTest() {
+        /**
+         * create a hashmap that stores the value of the current station and maps it to
+         * its adjacent stations (can be more than 1)
+         */
+        HashMap<String, List<Station>> adjMap = new HashMap<String, List<Station>>();
+
+        try (Scanner sc = new Scanner(new File("C:/Users/User/Desktop/CS201G2T5/src/data/traveltime.txt"));) { // <-- put the actual path of the file for junit testing
+            while (sc.hasNext()) {
+                String[] arr = sc.nextLine().split(" ");
+
+                // if the array is length of 3 and does not contain "//"
+                if (arr.length == 3 && !(arr[0].contains("//"))) {
+                    // create the next train station from arr[1] with the travel time at arr[2]
+                    Station nextStation = new Station(arr[1], Integer.parseInt(arr[2]));
+                    /**
+                     * checks for the adjacent stations that is mapped from the current station (if
+                     * any)
+                     */
+                    List<Station> adjacentStations = adjMap.getOrDefault(arr[0], new ArrayList<>());
+                    // add the next station to the list of adjacent stations
+                    adjacentStations.add(nextStation);
+                    // put it into the hashmap
+                    adjMap.put(arr[0], adjacentStations);
+
+                    // add the opposite because undirected
+                    nextStation = new Station(arr[0], Integer.parseInt(arr[2]));
+                    adjacentStations = adjMap.getOrDefault(arr[1], new ArrayList<>());
+                    adjacentStations.add(nextStation);
+                    adjMap.put(arr[1], adjacentStations);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            // swallow the exception
+            e.printStackTrace();
+        }
+        // System.out.println(adjMap.size()); // should print out 137
+        return adjMap;
+    }
+
+    /**
      * Prints the adjacency map of train stations.
      * 
      * @param adjMap The adjacency map to be printed.
@@ -77,13 +120,13 @@ public class DataUtilities {
     }
 
     /**
+     * Method to get the shortest path from the parent map.
      * 
-     * 
-     * @param parentMap
-     * @param start
-     * @param end
-     * @param current
-     * @param path
+     * @param parentMap The parent map.
+     * @param start The starting MRT station.
+     * @param end The destination MRT station.
+     * @param current The current MRT station in the recursion.
+     * @param path The path to be printed in the app.
      */
     public static void getPath(HashMap<String, String> parentMap, String start, String end, String current,
             ArrayList<String> path) {
@@ -97,10 +140,10 @@ public class DataUtilities {
     }
 
     /**
+     * Prints the timing of the shortest path.
      * 
-     * 
-     * @param distMap
-     * @param start
+     * @param distMap The dist map.
+     * @param start The starting MRT station.
      */
     public static void printTimeToAllStations(HashMap<String, Integer> distMap, String start) {
         System.out.println("The shortest path from start to other nodes:");
