@@ -30,7 +30,7 @@ public class App {
             String end = sc.nextLine();
             System.out.println("=============================================================================");
 
-            if (checkInput(start) && checkInput(end)) {
+            if (isValid(start) && isValid(end)) {
                 network.solve(adjMap, start);
                 ArrayList<String> firstPath = new ArrayList<>();
                 DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
@@ -42,10 +42,13 @@ public class App {
                 // available.
                 ArrayList<String> secondPath = new ArrayList<>();
                 DataUtilities.getPath(network.getParentMap2(), start, end, end, secondPath);
-                System.out.printf("Alternative path from %s to %s is: ", start, end);
-                System.out.print(secondPath);
-                System.out.println();
-
+                if (secondPath.equals(firstPath)) {
+                    System.out.println("There is no appropriate alternative path.");
+                } else {
+                    System.out.printf("Alternative path from %s to %s is: ", start, end);
+                    System.out.print(secondPath);
+                    System.out.println();
+                }
                 // DataUtilities.printTimeToAllStations(network.getDistMap(), start);
                 // DataUtilities.printTimeToAllStations(network.getDistMap2(), start);
 
@@ -62,7 +65,7 @@ public class App {
         System.out.println("Bye bye!");
     }
 
-    public boolean checkInput(String station) {
+    public boolean isValid(String station) {
         String line = station.substring(0,2);
         String num = station.substring(2);
         int stationNum = 0;
