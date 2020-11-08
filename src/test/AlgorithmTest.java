@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AlgorithmTest {
 
-    Map<String, Integer> mapCodeTest = DataUtilities.createMapCode();
     HashMap<String, List<Station>> adjMapTest = DataUtilities.createAdjMap();
     int numOfStationsTest = adjMapTest.size();
 
@@ -26,5 +25,18 @@ public class AlgorithmTest {
     public void assertEndStation() {
         networkTest.solve(adjMapTest, start);
         assertEquals(networkTest.getParentMap().get(end), "DT3");
+    }
+
+    @Test
+    public void assertExpectedPath() {
+        networkTest.solve(adjMapTest, start);
+        ArrayList<String> firstPath = new ArrayList<>();
+        DataUtilities.getPath(networkTest.getParentMap(), start, end, end, firstPath);
+
+        ArrayList<String> expectedPath = new ArrayList<>();
+        expectedPath.add("DT1");
+        expectedPath.add("DT2");
+        expectedPath.add("DT3");
+        assertEquals(expectedPath, firstPath);
     }
 }
