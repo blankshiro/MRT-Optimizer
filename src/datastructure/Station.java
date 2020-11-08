@@ -3,7 +3,7 @@ package datastructure;
 import java.util.*;
 
 /**
- * Train station
+ * Train station class.
  */
 public class Station implements Comparator<Station> {
     private String stationCode;
