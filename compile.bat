@@ -1,1 +1,0 @@
-javac -d target/classes -cp src src/app/App.java

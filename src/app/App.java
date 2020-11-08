@@ -12,7 +12,7 @@ public class App {
         int numOfStations = adjMap.size();
 
         // String start = "NE16";
-        // String end = "EW21";
+        // String end = "EW12";
 
         System.out.println("== MRT Train Optimizer ==");
         Scanner sc = new Scanner(System.in);
