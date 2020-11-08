@@ -20,7 +20,7 @@ public class Graph {
     private HashMap<String, List<Station>> adjMap;
     /** HashMap to keep track of parents of the station. */
     private HashMap<String, String> parentMap;
-    /** Second HashMap to keep track of the parents of the station.  */
+    /** Second HashMap to keep track of the parents of the station. */
     private HashMap<String, String> parentMap2;
 
     /**
