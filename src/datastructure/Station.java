@@ -1,15 +1,16 @@
-// package datastructure;
+package datastructure;
 
 import java.util.*;
 
 /**
- * Train station
+ * Train station class.
  */
 public class Station implements Comparator<Station> {
     private String stationCode;
     private int travelTime;
 
-    public Station() {}
+    public Station() {
+    }
 
     public Station(String stationCode, int travelTime) {
         this.stationCode = stationCode;
@@ -32,8 +33,10 @@ public class Station implements Comparator<Station> {
 
     @Override
     public int compare(Station station1, Station station2) {
-        if (station1.getTravelTime() < station2.getTravelTime()) return -1;
-        else if (station1.getTravelTime() > station2.getTravelTime()) return 1;
+        if (station1.getTravelTime() < station2.getTravelTime())
+            return -1;
+        else if (station1.getTravelTime() > station2.getTravelTime())
+            return 1;
         return 0;
     }
 }
