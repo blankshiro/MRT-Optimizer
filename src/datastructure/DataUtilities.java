@@ -1,7 +1,12 @@
 package datastructure;
 
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * DataUtilities class.
@@ -13,11 +18,10 @@ public class DataUtilities {
          * its adjacent stations (can be more than 1)
          */
         HashMap<String, List<Station>> adjMap = new HashMap<String, List<Station>>();
-        try (Scanner sc = new Scanner(new File("../data/traveltime.txt"));) {
 
+        try (Scanner sc = new Scanner(new File("src/data/traveltime.txt"));) {
             while (sc.hasNext()) {
                 String[] arr = sc.nextLine().split(" ");
-                // System.out.println(Arrays.toString(arr));
 
                 // if the array is length of 3 and does not contain "//"
                 if (arr.length == 3 && !(arr[0].contains("//"))) {

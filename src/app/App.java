@@ -1,9 +1,16 @@
 package app;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
-import datastructure.*;
+import org.graalvm.compiler.graph.Graph;
+
+import datastructure.DataUtilities;
 
 /**
  * Main application class.
@@ -12,7 +19,7 @@ public class App {
     HashMap<String, List<Station>> adjMap = DataUtilities.createAdjMap();
     int numOfStations = adjMap.size();
     Graph network = new Graph(numOfStations);
-
+    
     public App() {
         Scanner sc = new Scanner(System.in);
         boolean run = true;
