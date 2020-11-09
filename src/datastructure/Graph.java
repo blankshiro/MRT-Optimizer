@@ -106,17 +106,18 @@ public class Graph {
                 // if the new timing is less than the neighbour time.
                 if (newDist < distMap.get(neighbourCode)) {
 
-                    distMap2.put(neighbourCode, distMap.get(neighbourCode));
+                    // distMap2.put(neighbourCode, distMap.get(neighbourCode));
                     // add the adjacent station and time into the dist map.
                     distMap.put(neighbourCode, newDist);
 
-                    parentMap2.put(neighbourCode, parentMap.get(neighbourCode));
+                    // parentMap2.put(neighbourCode, parentMap.get(neighbourCode));
                     // add the adjacent station and the current station to the parent map.
                     parentMap.put(neighbourCode, current);
-                } else if (newDist < distMap2.get(neighbourCode)) {
-                    distMap2.put(neighbourCode, newDist);
-                    parentMap2.put(neighbourCode, current);
                 }
+                // } else if (newDist < distMap2.get(neighbourCode)) {
+                //     distMap2.put(neighbourCode, newDist);
+                //     parentMap2.put(neighbourCode, current);
+                // }
                 // add the neighbour station and the timing to the queue.
                 pq.add(new Station(neighbourCode, distMap.get(neighbourCode)));
             }
