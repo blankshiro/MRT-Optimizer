@@ -152,4 +152,20 @@ public class DataUtilities {
             System.out.println(start + " \t\t " + station.getKey() + "\t\t " + station.getValue());
         }
     }
+
+    public static boolean removeStationFromNeighbours(HashMap<String, List<Station>> adjMap, String fromStation, String toStation) {
+        int idx = -1;
+        for (int i = 0; i < adjMap.get(fromStation).size(); i++) {
+            if (adjMap.get(fromStation).get(i).getStationCode().equals(toStation)) {
+                idx = i;
+            }
+        }
+
+        if (idx != -1) {
+            adjMap.get(fromStation).remove(idx);
+            return true;
+        }
+
+        return false;
+    }
 }

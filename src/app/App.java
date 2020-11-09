@@ -31,6 +31,9 @@ public class App {
             System.out.println("=============================================================================");
 
             if (isValid(start) && isValid(end)) {
+                // example to remove
+                DataUtilities.removeStationFromNeighbours(adjMap, "NE12", "CC13");
+
                 network.solve(adjMap, start);
                 ArrayList<String> firstPath = new ArrayList<>();
                 DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
