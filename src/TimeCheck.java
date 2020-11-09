@@ -23,7 +23,7 @@ public class TimeCheck{
 
     public static HashMap<String, ArrayList<HashMap<String,LocalTime>>> createTimeMap(){
         HashMap<String, ArrayList<HashMap<String,LocalTime>>> m = new HashMap<>();
-        try (Scanner sc = new Scanner(new File("last_train_timing.txt"));) {
+        try (Scanner sc = new Scanner(new File("src/data/last_train_timing.txt"));) {
             while (sc.hasNext()) {
                 String[] arr = sc.nextLine().split(" ");
                 ArrayList<HashMap<String,LocalTime>> list = new ArrayList<>();

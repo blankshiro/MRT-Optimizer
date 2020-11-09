@@ -17,7 +17,7 @@ public class App {
     HashMap<String, List<Station>> adjMap = DataUtilities.createAdjMap();
     int numOfStations = adjMap.size();
     Graph network = new Graph(numOfStations);
-    
+
     public App() {
         Scanner sc = new Scanner(System.in);
         boolean run = true;
@@ -65,58 +65,51 @@ public class App {
         System.out.println("Bye bye!");
     }
 
+    /**
+     * Check if the user input is a valid MRT station code.
+     * 
+     * @param station The MRT station code input.
+     * @return True if the input is valid. Otherwise, return false.
+     */
     public boolean isValid(String station) {
-        String line = station.substring(0,2);
+        String line = station.substring(0, 2);
         String num = station.substring(2);
         int stationNum = 0;
         try {
             stationNum = Integer.parseInt(num);
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
-        if (stationNum < 1) return false; //all stations start from 1
-        switch (line){
-            
+        if (stationNum < 1)
+            return false; // all stations start from 1
+        switch (line) {
+
             case "DT":
-                if (stationNum > 35) return false;
+                if (stationNum > 35)
+                    return false;
                 break;
             case "EW":
             case "CC":
-                if (stationNum > 29) return false;
+                if (stationNum > 29)
+                    return false;
                 break;
             case "CE":
             case "CG":
-                if (stationNum > 2) return false;
+                if (stationNum > 2)
+                    return false;
                 break;
             case "NE":
-                if (stationNum > 17) return false;
+                if (stationNum > 17)
+                    return false;
                 break;
             case "NS":
-                if (stationNum > 28) return false;
+                if (stationNum > 28)
+                    return false;
                 break;
             default:
                 return false;
         }
         return true;
-        // boolean check1 = false;
-        // boolean check2 = false;
-        // Iterator<Entry<String, List<Station>>> iterator = adjMap.entrySet().iterator();
-        // while (iterator.hasNext()) {
-        //     Map.Entry<String, List<Station>> entry = iterator.next();
-        //     if (start.equals(entry.getKey())) {
-        //         check1 = true;
-        //     }
-
-        //     if (end.equals(entry.getKey())) {
-        //         check2 = true;
-        //     }
-        // }
-
-        // if (check1 && check2) {
-        //     return true;
-        // } else {
-        //     return false;
-        // }
     }
 
     public static void main(String args[]) {
