@@ -53,6 +53,13 @@ public class TimeCheck{
         return m;
     }
 
+    public static boolean checkFirstStation(ArrayList<String> arr, HashMap<String, ArrayList<HashMap<String,LocalTime>>> timeMap, LocalTime now){
+        LocalTime midnight = LocalTime.of(0,0);
+        LocalDate today = LocalDate.now();
+        LocalDateTime todayMidnight = LocalDateTime.of(today, LocalTime.of(23,59));
+        LocalDateTime mrtStartTime = LocalDateTime.of(today, LocalTime.of(6, 00));
+    }
+
     //Input: String array of station names
     public static boolean makeStnTime(ArrayList<String> arr, HashMap<String, ArrayList<HashMap<String,LocalTime>>> timeMap, LocalTime now){
         //get current system time - REPLACE BEFORE SUBMISSION
