@@ -17,7 +17,7 @@ public class App {
     HashMap<String, List<Station>> adjMap = DataUtilities.createAdjMap();
     int numOfStations = adjMap.size();
     Graph network = new Graph(numOfStations);
-    
+
     public App() {
         Scanner sc = new Scanner(System.in);
         boolean run = true;
@@ -30,7 +30,7 @@ public class App {
             String end = sc.nextLine();
             System.out.println("=============================================================================");
 
-            if (checkInput(start, end)) {
+            if (isValid(start) && isValid(end)) {
                 network.solve(adjMap, start);
                 ArrayList<String> firstPath = new ArrayList<>();
                 DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
@@ -42,10 +42,13 @@ public class App {
                 // available.
                 ArrayList<String> secondPath = new ArrayList<>();
                 DataUtilities.getPath(network.getParentMap2(), start, end, end, secondPath);
-                System.out.printf("Alternative path from %s to %s is: ", start, end);
-                System.out.print(secondPath);
-                System.out.println();
-
+                if (secondPath.equals(firstPath)) {
+                    System.out.println("There is no appropriate alternative path.");
+                } else {
+                    System.out.printf("Alternative path from %s to %s is: ", start, end);
+                    System.out.print(secondPath);
+                    System.out.println();
+                }
                 // DataUtilities.printTimeToAllStations(network.getDistMap(), start);
                 // DataUtilities.printTimeToAllStations(network.getDistMap2(), start);
 
@@ -62,26 +65,51 @@ public class App {
         System.out.println("Bye bye!");
     }
 
-    public boolean checkInput(String start, String end) {
-        boolean check1 = false;
-        boolean check2 = false;
-        Iterator<Entry<String, List<Station>>> iterator = adjMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, List<Station>> entry = iterator.next();
-            if (start.equals(entry.getKey())) {
-                check1 = true;
-            }
-
-            if (end.equals(entry.getKey())) {
-                check2 = true;
-            }
-        }
-
-        if (check1 && check2) {
-            return true;
-        } else {
+    /**
+     * Check if the user input is a valid MRT station code.
+     * 
+     * @param station The MRT station code input.
+     * @return True if the input is valid. Otherwise, return false.
+     */
+    public boolean isValid(String station) {
+        String line = station.substring(0, 2);
+        String num = station.substring(2);
+        int stationNum = 0;
+        try {
+            stationNum = Integer.parseInt(num);
+        } catch (Exception e) {
             return false;
         }
+        if (stationNum < 1)
+            return false; // all stations start from 1
+        switch (line) {
+
+            case "DT":
+                if (stationNum > 35)
+                    return false;
+                break;
+            case "EW":
+            case "CC":
+                if (stationNum > 29)
+                    return false;
+                break;
+            case "CE":
+            case "CG":
+                if (stationNum > 2)
+                    return false;
+                break;
+            case "NE":
+                if (stationNum > 17)
+                    return false;
+                break;
+            case "NS":
+                if (stationNum > 28)
+                    return false;
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 
     public static void main(String args[]) {

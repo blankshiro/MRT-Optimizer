@@ -6,6 +6,11 @@ import datastructure.*;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * AlgorithmTest class. Please note before testing: Go to DataUtilities.java and
+ * change the path of the traveltime.txt file in the createAdjMapTest to your
+ * actual file path.
+ */
 public class AlgorithmTest {
 
     HashMap<String, List<Station>> adjMapTest = DataUtilities.createAdjMapTest();
@@ -15,7 +20,7 @@ public class AlgorithmTest {
 
     String start = "DT1";
     String end = "DT3";
-    
+
     @Test
     public void assertNumofStations() {
         assertEquals(adjMapTest.size(), networkTest.getNumOfStations());
@@ -61,5 +66,43 @@ public class AlgorithmTest {
         // should be missing DT4 because there is no data on DT4
         expectedPath.add("DT5");
         assertEquals(expectedPath, firstPath2);
+    }
+
+    String start3 = "EW15";
+    String end3 = "DT12";
+
+    @Test
+    public void assertExpectedPath3() {
+        networkTest.solve(adjMapTest, start3);
+        ArrayList<String> firstPath3 = new ArrayList<>();
+        DataUtilities.getPath(networkTest.getParentMap(), start, end3, end3, firstPath3);
+
+        ArrayList<String> expectedPath = new ArrayList<>();
+        expectedPath.add("EW15");
+        expectedPath.add("EW14");
+        expectedPath.add("EW13");
+        expectedPath.add("EW12");
+        expectedPath.add("DT14");
+        expectedPath.add("DT13");
+        expectedPath.add("DT12");
+        assertEquals(expectedPath, firstPath3);
+    }
+
+    @Test
+    public void assertAlternatePath() {
+        networkTest.solve(adjMapTest, start3);
+        ArrayList<String> alternatePath = new ArrayList<>();
+        DataUtilities.getPath(networkTest.getParentMap2(), start3, end3, end3, alternatePath);
+
+        ArrayList<String> expectedPath = new ArrayList<>();
+        expectedPath.add("EW15");
+        expectedPath.add("EW16");
+        expectedPath.add("NE3");
+        expectedPath.add("NE4");
+        expectedPath.add("NE5");
+        expectedPath.add("NE6");
+        expectedPath.add("NE7");
+        expectedPath.add("DT12");
+        assertEquals(expectedPath, alternatePath);
     }
 }

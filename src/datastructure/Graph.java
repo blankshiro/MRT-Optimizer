@@ -58,18 +58,16 @@ public class Graph {
         pq.add(new Station(start, 0));
         // set the starting station key to 0.
         distMap.put(start, 0);
-
+        // set the starting station key to 0 for the second dist map (alternative route).
         distMap2.put(start, 0);
         // add the starting station to the parent map and set the key to null.
         parentMap.put(start, null);
-
+        // add the starting station to the second parent map (alternative route).
         parentMap2.put(start, null);
 
         while (pq.size() != 0) {
-            // System.out.println("PQ: " + pq);
             // gets the current station from the top of the queue.
             String current = pq.remove().getStationCode();
-            // System.out.println("Visiting " + current);
             // adds the current station to the set of visited stations.
             visited.add(current);
             adjustAdjacentDistances(current);
