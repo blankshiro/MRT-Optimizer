@@ -1,3 +1,5 @@
+package datastructure;
+
 import java.util.*;
 import java.io.*;
 import datastructure.*;
@@ -68,7 +70,7 @@ public class TimeCheck{
         //retrieves all important stations that needs to compare time
         for (int i = 0; i < arr.size(); i++){
             String currentLine = arr.get(i).substring(0,2);
-            // System.out.println("currentLine: " + currentLine);
+
             if (i == 0){
                 checkingInterchanges.add(arr.get(i));
             }
