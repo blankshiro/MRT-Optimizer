@@ -28,7 +28,7 @@ public class App {
 
             if (isValid(start) && isValid(end)) {
                 // example to remove
-                DataUtilities.removeStationFromNeighbours(adjMap, "NE12", "CC13");
+                // DataUtilities.removeStationFromNeighbours(adjMap, "NE12", "CC13");
                 network.solve(adjMap, start);
                 ArrayList<String> firstPath = new ArrayList<>();
                 DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
@@ -37,13 +37,13 @@ public class App {
                 System.out.println();
                 System.out.println("Can you make it in time to your destination? ");
 
-                if (TimeCheck.makeStnTime(firstPath, timeMap, LocalTime.now())) {
-                    System.out.print("Yes!");
-                    System.out.println();
-                } else {
-                    System.out.print("No. Please use a private transport instead.");
-                    System.out.println();
-                }
+                // if (TimeCheck.makeStnTime(firstPath, timeMap, LocalTime.now())) {
+                //     System.out.print("Yes!");
+                //     System.out.println();
+                // } else {
+                //     System.out.print("No. Please use a private transport instead.");
+                //     System.out.println();
+                // }
 
                 // this will give an identical path as first path if no second path
                 // available.
