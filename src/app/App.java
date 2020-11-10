@@ -81,6 +81,12 @@ public class App {
      * @return True if the input is valid. Otherwise, return false.
      */
     public boolean isValid(String station) {
+        //Check for missing stations - they do not exist on the mrt map.
+        if (station.equals("DT4") || station.equals("NE2") || station.equals("NS6") || station.equals("NS12") || station.equals("CC18")){
+            return false;
+        }
+
+
         String line = station.substring(0, 2);
         String num = station.substring(2);
         int stationNum = 0;
