@@ -153,6 +153,7 @@ public class TimeCheck{
                     }
 
                     if (bigger){
+                        System.out.println("Bigger firstStn");
                         //Retrieve the localtime for the hashmap, convert to datetime and check if the current time is before the last train time
                         if (stnCode > Integer.parseInt(stopNoOrigin)){
                             LocalDateTime nowDT = LocalDateTime.of(today, now);
@@ -183,6 +184,7 @@ public class TimeCheck{
                             }
                         }
                     } else {
+                        System.out.println("Smaller firstStn");
                         if (stnCode < Integer.parseInt(stopNoOrigin)){
                             LocalDateTime nowDT = LocalDateTime.of(today, now);
                             LocalDateTime valueDT = LocalDateTime.of(today, v);
