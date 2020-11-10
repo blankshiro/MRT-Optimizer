@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
+import java.time.LocalTime;
 
 import datastructure.*;
 
@@ -17,6 +18,7 @@ public class App {
     HashMap<String, List<Station>> adjMap = DataUtilities.createAdjMap();
     int numOfStations = adjMap.size();
     Graph network = new Graph(numOfStations);
+    HashMap<String, ArrayList<HashMap<String,LocalTime>>> timeMap = TimeCheck.createTimeMap();
 
     public App() {
         Scanner sc = new Scanner(System.in);
@@ -31,32 +33,74 @@ public class App {
             System.out.println("=============================================================================");
 
             if (isValid(start) && isValid(end)) {
-                // example to remove
-                DataUtilities.removeStationFromNeighbours(adjMap, "NE12", "CC13");
 
-                network.solve(adjMap, start);
-                ArrayList<String> firstPath = new ArrayList<>();
-                DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
-                System.out.printf("Best path from %s to %s is: ", start, end);
-                System.out.print(firstPath);
-                System.out.println();
+                //check if the start station have trains running to begin with
+                // LocalTime now = LocalTime.now();
+                LocalTime now = LocalTime.of(23,59);
 
-                // this will give an identical path as first path if no second path
-                // available.
-                ArrayList<String> secondPath = new ArrayList<>();
-                DataUtilities.getPath(network.getParentMap2(), start, end, end, secondPath);
-                if (secondPath.equals(firstPath)) {
-                    System.out.println("There is no appropriate alternative path.");
+                boolean validTime = TimeCheck.checkFirstStation(start, end, timeMap, now);
+
+                if (validTime){
+                    network.solve(adjMap, start);
+                    ArrayList<String> firstPath = new ArrayList<>();
+                    ArrayList<String> failedInterchanges = new ArrayList<>();
+
+                    DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
+                   
+                    //Check time for interchanges if any
+                    failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, now);
+                    // System.out.printf("Best path from %s to %s is: ", start, end);
+                    // System.out.print(firstPath);
+                    // System.out.println();
+                    
+                    //-----------this should only run if the first one fails----------------
+                    // this will give an identical path as first path if no second path
+                    // available.
+
+                    while(firstPath.size() != 0 && failedInterchanges.size() != 0){
+                        for (int i = 0; i < failedInterchanges.size(); i+=2){
+                            DataUtilities.removeStationFromNeighbours(adjMap, failedInterchanges.get(i), failedInterchanges.get(i+1));
+                        }
+
+                        failedInterchanges.clear();
+                        network.solve(adjMap, start);
+                        DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
+                        failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, now);
+
+                        if (firstPath.size() == 0){
+                            break;
+                        }
+                    }
+
+                    if (firstPath.size() != 0){
+                        System.out.printf("Best path from %s to %s is: ", start, end);
+                        System.out.print(firstPath);
+                        System.out.println();
+                    } else {
+                        String printStr = String.format("There is no path to get from %s to %s at this time.", start, end);
+                        System.out.println(printStr);
+                    }
+
+                    // DataUtilities.removeStationFromNeighbours(adjMap, "NE12", "CC13");
+
+                    // ArrayList<String> secondPath = new ArrayList<>();
+                    // DataUtilities.getPath(network.getParentMap2(), start, end, end, secondPath);
+                    // if (secondPath.equals(firstPath)) {
+                    //     System.out.println("There is no appropriate alternative path.");
+                    // } else {
+                    //     System.out.printf("Alternative path from %s to %s is: ", start, end);
+                    //     System.out.print(secondPath);
+                    //     System.out.println();
+                    // }
+                    // DataUtilities.printTimeToAllStations(network.getDistMap(), start);
+                    // DataUtilities.printTimeToAllStations(network.getDistMap2(), start);
+
+                    // DataUtilities.printParentMap(network.getParentMap());
+                    // DataUtilities.printParentMap(network.getParentMap2());
                 } else {
-                    System.out.printf("Alternative path from %s to %s is: ", start, end);
-                    System.out.print(secondPath);
-                    System.out.println();
+                    System.out.println("There is no train running from this station at this time!");
                 }
-                // DataUtilities.printTimeToAllStations(network.getDistMap(), start);
-                // DataUtilities.printTimeToAllStations(network.getDistMap2(), start);
-
-                // DataUtilities.printParentMap(network.getParentMap());
-                // DataUtilities.printParentMap(network.getParentMap2());
+                    
                 run = false;
             } else {
                 System.out.println("You did not enter a valid train code!");
