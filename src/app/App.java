@@ -1,13 +1,7 @@
 package app;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Scanner;
-import java.time.LocalTime;
+import java.util.*;
+import java.time.*;
 
 import datastructure.*;
 
@@ -16,9 +10,9 @@ import datastructure.*;
  */
 public class App {
     HashMap<String, List<Station>> adjMap = DataUtilities.createAdjMap();
+    HashMap<String, ArrayList<HashMap<String, LocalTime>>> timeMap = TimeCheck.createTimeMap();
     int numOfStations = adjMap.size();
     Graph network = new Graph(numOfStations);
-    HashMap<String, ArrayList<HashMap<String,LocalTime>>> timeMap = TimeCheck.createTimeMap();
 
     public App() {
         Scanner sc = new Scanner(System.in);
@@ -37,7 +31,7 @@ public class App {
                 //check if the start station have trains running to begin with
                 // LocalTime now = LocalTime.now();
                 // LocalTime now = LocalTime.of(23,59);
-                LocalTime now = LocalTime.of(1,30);
+                LocalTime now = LocalTime.of(00,15);
 
                 boolean validTime = TimeCheck.checkFirstStation(start, end, timeMap, now);
                 System.out.println("validTime: " + validTime);
@@ -51,9 +45,23 @@ public class App {
                    
                     //Check time for interchanges if any
                     failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, now);
-                    System.out.printf("Best path from %s to %s is: ", start, end);
-                    System.out.print(firstPath);
-                    System.out.println();
+
+                    if (failedInterchanges.size() == 0) {
+                        System.out.printf("Best path from %s to %s is: ", start, end);
+                        System.out.print(firstPath);
+                        System.out.println();
+
+                        ArrayList<String> secondPath = new ArrayList<>();
+                        DataUtilities.getPath(network.getParentMap2(), start, end, end, secondPath);
+                        if (secondPath.equals(firstPath)) {
+                            System.out.println("There is no appropriate alternative path.");
+                        } else {
+                        System.out.printf("A close alternative path from %s to %s is: ", start, end);
+                        System.out.print(secondPath);
+                        System.out.println();
+                        }
+                        break;
+                    }
                     
                     //-----------this should only run if the first one fails----------------
                     // this will give an identical path as first path if no second path
@@ -87,23 +95,6 @@ public class App {
                         String printStr = String.format("There is no path to get from %s to %s at this time.", start, end);
                         System.out.println(printStr);
                     }
-
-                    // DataUtilities.removeStationFromNeighbours(adjMap, "NE12", "CC13");
-
-                    // ArrayList<String> secondPath = new ArrayList<>();
-                    // DataUtilities.getPath(network.getParentMap2(), start, end, end, secondPath);
-                    // if (secondPath.equals(firstPath)) {
-                    //     System.out.println("There is no appropriate alternative path.");
-                    // } else {
-                    //     System.out.printf("Alternative path from %s to %s is: ", start, end);
-                    //     System.out.print(secondPath);
-                    //     System.out.println();
-                    // }
-                    // DataUtilities.printTimeToAllStations(network.getDistMap(), start);
-                    // DataUtilities.printTimeToAllStations(network.getDistMap2(), start);
-
-                    // DataUtilities.printParentMap(network.getParentMap());
-                    // DataUtilities.printParentMap(network.getParentMap2());
                 } else {
                     System.out.println("There is no train running from this station at this time!");
                 }
@@ -126,6 +117,12 @@ public class App {
      * @return True if the input is valid. Otherwise, return false.
      */
     public boolean isValid(String station) {
+        //Check for missing stations - they do not exist on the mrt map.
+        if (station.equals("DT4") || station.equals("NE2") || station.equals("NS6") || station.equals("NS12") || station.equals("CC18")){
+            return false;
+        }
+
+
         String line = station.substring(0, 2);
         String num = station.substring(2);
         int stationNum = 0;
