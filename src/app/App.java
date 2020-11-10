@@ -1,12 +1,7 @@
 package app;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Scanner;
+import java.util.*;
+import java.time.*;
 
 import datastructure.*;
 
@@ -15,6 +10,7 @@ import datastructure.*;
  */
 public class App {
     HashMap<String, List<Station>> adjMap = DataUtilities.createAdjMap();
+    HashMap<String, ArrayList<HashMap<String, LocalTime>>> timeMap = TimeCheck.createTimeMap();
     int numOfStations = adjMap.size();
     Graph network = new Graph(numOfStations);
 
@@ -33,25 +29,35 @@ public class App {
             if (isValid(start) && isValid(end)) {
                 // example to remove
                 DataUtilities.removeStationFromNeighbours(adjMap, "NE12", "CC13");
-
                 network.solve(adjMap, start);
                 ArrayList<String> firstPath = new ArrayList<>();
                 DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
                 System.out.printf("Best path from %s to %s is: ", start, end);
                 System.out.print(firstPath);
                 System.out.println();
+                System.out.println("Can you make it in time to your destination? ");
+
+                if (TimeCheck.makeStnTime(firstPath, timeMap, LocalTime.now())) {
+                    System.out.print("Yes!");
+                    System.out.println();
+                } else {
+                    System.out.print("No. Please use a private transport instead.");
+                    System.out.println();
+                }
 
                 // this will give an identical path as first path if no second path
                 // available.
-                ArrayList<String> secondPath = new ArrayList<>();
-                DataUtilities.getPath(network.getParentMap2(), start, end, end, secondPath);
-                if (secondPath.equals(firstPath)) {
-                    System.out.println("There is no appropriate alternative path.");
-                } else {
-                    System.out.printf("Alternative path from %s to %s is: ", start, end);
-                    System.out.print(secondPath);
-                    System.out.println();
-                }
+                
+                // ArrayList<String> secondPath = new ArrayList<>();
+                // DataUtilities.getPath(network.getParentMap2(), start, end, end, secondPath);
+                // if (secondPath.equals(firstPath)) {
+                //     System.out.println("There is no appropriate alternative path.");
+                // } else {
+                //     System.out.printf("Alternative path from %s to %s is: ", start, end);
+                //     System.out.print(secondPath);
+                //     System.out.println();
+                // }
+
                 // DataUtilities.printTimeToAllStations(network.getDistMap(), start);
                 // DataUtilities.printTimeToAllStations(network.getDistMap2(), start);
 
