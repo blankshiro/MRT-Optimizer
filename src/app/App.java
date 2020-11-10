@@ -37,7 +37,7 @@ public class App {
                 //check if the start station have trains running to begin with
                 // LocalTime now = LocalTime.now();
                 // LocalTime now = LocalTime.of(23,59);
-                LocalTime now = LocalTime.of(00,15);
+                LocalTime now = LocalTime.of(1,30);
 
                 boolean validTime = TimeCheck.checkFirstStation(start, end, timeMap, now);
                 System.out.println("validTime: " + validTime);
