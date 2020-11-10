@@ -39,6 +39,7 @@ public class App {
                 LocalTime now = LocalTime.of(23,59);
 
                 boolean validTime = TimeCheck.checkFirstStation(start, end, timeMap, now);
+                System.out.println(validTime);
 
                 if (validTime){
                     network.solve(adjMap, start);
@@ -49,9 +50,9 @@ public class App {
                    
                     //Check time for interchanges if any
                     failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, now);
-                    // System.out.printf("Best path from %s to %s is: ", start, end);
-                    // System.out.print(firstPath);
-                    // System.out.println();
+                    System.out.printf("Best path from %s to %s is: ", start, end);
+                    System.out.print(firstPath);
+                    System.out.println();
                     
                     //-----------this should only run if the first one fails----------------
                     // this will give an identical path as first path if no second path
@@ -59,7 +60,9 @@ public class App {
 
                     while(firstPath.size() != 0 && failedInterchanges.size() != 0){
                         for (int i = 0; i < failedInterchanges.size(); i+=2){
-                            DataUtilities.removeStationFromNeighbours(adjMap, failedInterchanges.get(i), failedInterchanges.get(i+1));
+                            String stnOne = failedInterchanges.get(i);
+                            String stnTwo = failedInterchanges.get(i+1);
+                            DataUtilities.removeStationFromNeighbours(adjMap, stnOne, stnTwo);
                         }
 
                         failedInterchanges.clear();
@@ -70,6 +73,9 @@ public class App {
                         if (firstPath.size() == 0){
                             break;
                         }
+
+                        System.out.println(firstPath);
+                        System.out.println(failedInterchanges);
                     }
 
                     if (firstPath.size() != 0){

@@ -93,11 +93,14 @@ public class TimeCheck{
                 LocalDateTime nowDT = LocalDateTime.of(today, now);
                 LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                if (valueDT.isBefore(todayMidnight) && v.isAfter(midnight)){
+                if (v.isAfter(midnight)){
                     if (!nowDT.isAfter(todayMidnight)){
                         valueDT = valueDT.plusDays(1);
                     }
                 }
+                System.out.println("todayMidnight: " +  todayMidnight);
+                System.out.println("nowDT: " +  nowDT);
+                System.out.println("valueDT: " +  valueDT);
 
                 if (nowDT.isBefore(valueDT)){
                     if (nowDT.isAfter(mrtStartTime)){
@@ -125,11 +128,14 @@ public class TimeCheck{
                             LocalDateTime nowDT = LocalDateTime.of(today, now);
                             LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                            if (valueDT.isAfter(todayMidnight)){
+                            if (v.isAfter(midnight)){
                                 if (!nowDT.isAfter(todayMidnight)){
                                     valueDT = valueDT.plusDays(1);
                                 }
                             }
+                            System.out.println("todayMidnight: " +  todayMidnight);
+                            System.out.println("nowDT: " +  nowDT);
+                            System.out.println("valueDT: " +  valueDT);
 
                             if (nowDT.isBefore(valueDT)){
                                 if (nowDT.isAfter(mrtStartTime)){
@@ -142,7 +148,7 @@ public class TimeCheck{
                             LocalDateTime nowDT = LocalDateTime.of(today, now);
                             LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                            if (valueDT.isBefore(todayMidnight) && v.isAfter(midnight)){
+                            if (v.isAfter(midnight)){
                                 if (!nowDT.isAfter(todayMidnight)){
                                     valueDT = valueDT.plusDays(1);
                                 }
@@ -240,7 +246,7 @@ public class TimeCheck{
                         LocalDateTime nowDT = LocalDateTime.of(today, now);
                         LocalDateTime valueDT = LocalDateTime.of(today, v);
     
-                        if (valueDT.isBefore(todayMidnight) && v.isAfter(midnight)){
+                        if (v.isAfter(midnight)){
                             if (!nowDT.isAfter(todayMidnight)){
                                 valueDT = valueDT.plusDays(1);
                             }
@@ -272,7 +278,7 @@ public class TimeCheck{
                                     LocalDateTime nowDT = LocalDateTime.of(today, now);
                                     LocalDateTime valueDT = LocalDateTime.of(today, v);
     
-                                    if (valueDT.isAfter(todayMidnight)){
+                                    if (v.isAfter(midnight)){
                                         if (!nowDT.isAfter(todayMidnight)){
                                             valueDT = valueDT.plusDays(1);
                                         }
@@ -289,7 +295,7 @@ public class TimeCheck{
                                     LocalDateTime nowDT = LocalDateTime.of(today, now);
                                     LocalDateTime valueDT = LocalDateTime.of(today, v);
     
-                                    if (valueDT.isBefore(todayMidnight) && v.isAfter(midnight)){
+                                    if (v.isAfter(midnight)){
                                         if (!nowDT.isAfter(todayMidnight)){
                                             valueDT = valueDT.plusDays(1);
                                         }
@@ -310,8 +316,8 @@ public class TimeCheck{
     
                 if (!madeIT){
                     //add to arraylist for failed interchanges for removal later and recalculation
-                    failedInterchanges.add(origin);
                     failedInterchanges.add(checkingInterchanges.get(j-1));
+                    failedInterchanges.add(origin);
                 }
             }
         }
