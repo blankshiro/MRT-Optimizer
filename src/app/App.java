@@ -34,17 +34,15 @@ public class App {
                 LocalTime now = LocalTime.of(23,55);
                 // LocalTime now = LocalTime.of(0,15);
 
+                network.solve(adjMap, start);
+                ArrayList<String> firstPath = new ArrayList<>();
+                ArrayList<String> failedInterchanges = new ArrayList<>();
 
-                boolean validTime = TimeCheck.checkFirstStation(start, end, timeMap, now);
-                System.out.println("validTime: " + validTime);
+                DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
 
+                boolean validTime = TimeCheck.checkFirstStation(firstPath.get(0), firstPath.get(1), timeMap, now);
+                
                 if (validTime){
-                    network.solve(adjMap, start);
-                    ArrayList<String> firstPath = new ArrayList<>();
-                    ArrayList<String> failedInterchanges = new ArrayList<>();
-
-                    DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
-                   
                     //Check time for interchanges if any
                     failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, now);
                     System.out.println("Failed Interchanges: " + failedInterchanges);
