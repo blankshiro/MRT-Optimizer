@@ -52,11 +52,6 @@ public class App {
                     System.out.print(firstPath);
                     System.out.println();
 
-                    
-                    //-----------this should only run if the first one fails----------------
-                    // this will give an identical path as first path if no second path
-                    // available.
-
                     while(firstPath.size() != 0 && failedInterchanges.size() != 0){
                         String stnOne = failedInterchanges.get(0);
                         String stnTwo = failedInterchanges.get(1);
@@ -64,6 +59,7 @@ public class App {
 
                         failedInterchanges.clear();
                         firstPath.clear();
+                        network = new Graph(numOfStations);
                         network.solve(adjMap, start);
                         DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
                         System.out.println("Reran first path: " + firstPath);
