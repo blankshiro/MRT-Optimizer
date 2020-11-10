@@ -36,8 +36,8 @@ public class App {
 
                 //check if the start station have trains running to begin with
                 // LocalTime now = LocalTime.now();
-                // LocalTime now = LocalTime.of(23,59);
-                LocalTime now = LocalTime.of(1,30);
+                LocalTime now = LocalTime.of(23,55);
+                // LocalTime now = LocalTime.of(0,15);
 
                 boolean validTime = TimeCheck.checkFirstStation(start, end, timeMap, now);
                 System.out.println("validTime: " + validTime);
@@ -51,6 +51,7 @@ public class App {
                    
                     //Check time for interchanges if any
                     failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, now);
+                    System.out.println("Failed Interchanges: " + failedInterchanges);
                     System.out.printf("Best path from %s to %s is: ", start, end);
                     System.out.print(firstPath);
                     System.out.println();
@@ -60,23 +61,24 @@ public class App {
                     // available.
 
                     while(firstPath.size() != 0 && failedInterchanges.size() != 0){
-                        for (int i = 0; i < failedInterchanges.size(); i+=2){
-                            String stnOne = failedInterchanges.get(i);
-                            String stnTwo = failedInterchanges.get(i+1);
-                            System.out.println("DataUtility: " + DataUtilities.removeStationFromNeighbours(adjMap, stnOne, stnTwo));
-                        }
+                        String stnOne = failedInterchanges.get(0);
+                        String stnTwo = failedInterchanges.get(1);
+                        DataUtilities.removeStationFromNeighbours(adjMap, failedInterchanges.get(0), failedInterchanges.get(1));
 
                         failedInterchanges.clear();
+                        firstPath.clear();
                         network.solve(adjMap, start);
                         DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
-                        failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, now);
+                        System.out.println("Reran first path: " + firstPath);
 
                         if (firstPath.size() == 0){
                             break;
                         }
 
+                        failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, now);
+
                         System.out.println(firstPath);
-                        System.out.println(failedInterchanges);
+                        System.out.println("Failed Interchanges: " + failedInterchanges);
                     }
 
                     if (firstPath.size() != 0){

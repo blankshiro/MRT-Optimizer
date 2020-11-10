@@ -7,21 +7,6 @@ import java.time.*;
 import java.math.BigInteger;
 
 public class TimeCheck{
-    
-    // public static void main(String args[]) {
-    //     HashMap<String, ArrayList<HashMap<String,LocalTime>>> timeMap = createTimeMap();
-    //     ArrayList<String> testList = new ArrayList<>();
-    //     testList.add("DT10");
-    //     testList.add("DT9");
-    //     testList.add("CC19");
-    //     testList.add("CC17");
-    //     testList.add("CC15");
-    //     testList.add("CC14");
-
-    //     System.out.println(makeStnTime(testList, timeMap, LocalTime.of(4, 30)));
-    //     System.out.println(makeStnTime(new String[]{"DT10", "DT11"}, timeMap, LocalTime.of(4, 30)));
-    //     System.out.println(makeStnTime(new String[]{"DT10", "DT9"}, timeMap, LocalTime.of(22, 30)));
-    // }
 
     public static HashMap<String, ArrayList<HashMap<String,LocalTime>>> createTimeMap(){
         HashMap<String, ArrayList<HashMap<String,LocalTime>>> m = new HashMap<>();
@@ -55,11 +40,7 @@ public class TimeCheck{
 
     //checks and returns if first station can be made, if not return false
     public static boolean checkFirstStation(String start, String end, HashMap<String, ArrayList<HashMap<String,LocalTime>>> timeMap, LocalTime now){
-        LocalTime midnight = LocalTime.of(23,59);
-        // LocalTime oneMinuteBeforeMidnight = LocalTime.of(23,59);
         LocalDate today = LocalDate.now();
-        LocalDateTime todayBeforeMidnight = LocalDateTime.of(today, LocalTime.of(23,59));
-        LocalDateTime todayAfterMidnight = LocalDateTime.of(today, LocalTime.of(0,0));
         LocalDateTime mrtStartTime = LocalDateTime.of(today, LocalTime.of(6, 00));
 
         //retrieve the relevant dataset from the hashmap
@@ -95,29 +76,21 @@ public class TimeCheck{
                 LocalDateTime nowDT = LocalDateTime.of(today, now);
                 LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                if (now.isBefore(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59))){
-                    todayAfterMidnight = todayAfterMidnight.plusDays(1);   
-                }
-
-                // if (v.isAfter(LocalTime.MIDNIGHT) && nowDT.isBefore(todayBeforeMidnight) || nowDT.equals(todayBeforeMidnight)){                    
-                //     valueDT = valueDT.plusDays(1);
-                //     mrtStartTime = mrtStartTime.plusDays(1);
-                // }
-                if (!nowDT.isAfter(todayBeforeMidnight) && (now.isAfter(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59)))){
-                    if (v.isAfter(LocalTime.MIDNIGHT)){                    
+                if (now.getHour() >= 12 && now.getHour() <=23){
+                    if (v.getHour() >= 0 && v.getHour() < 12){                  
                         valueDT = valueDT.plusDays(1);
                         mrtStartTime = mrtStartTime.plusDays(1);
+                    } else {
+                        mrtStartTime = mrtStartTime.plusDays(1);
+                    }
+                } else if (now.getHour() < 12 && now.getHour() >= 0){
+                    if ((v.getHour() >= 12 && v.getHour() <= 23)){
+                        valueDT = valueDT.minusDays(1);
                     }
                 }
-                
-                System.out.println("nowDT.isAfter(todayBeforeMidnight): " +  nowDT.isAfter(todayBeforeMidnight));
-                System.out.println("v.isAfter(LocalTime.MIDNIGHT): " +  v.isAfter(LocalTime.MIDNIGHT));
-                System.out.println("now.isAfter(midnight): " +  now.isAfter(midnight));
-                System.out.println("now.equals(LocalTime.of(23,59)): " +  now.equals(LocalTime.of(23,59)));
-                System.out.println("todayBeforeMidnight: " +  todayBeforeMidnight);
+
                 System.out.println("nowDT: " +  nowDT);
                 System.out.println("valueDT: " +  valueDT);
-                System.out.println("nowDT.isBefore(valueDT): " +  nowDT.isBefore(valueDT));
 
                 if (nowDT.isBefore(valueDT)){
                     madeIT = true;
@@ -147,37 +120,21 @@ public class TimeCheck{
                             LocalDateTime nowDT = LocalDateTime.of(today, now);
                             LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                            System.out.println("now.isBefore(LocalTime.of(23,59)): " + now.isBefore(LocalTime.of(23,59)));
-                            if (now.isBefore(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59))){
-                                todayAfterMidnight = todayAfterMidnight.plusDays(1);   
-                            }
-
-                            // if (v.isAfter(LocalTime.MIDNIGHT) && nowDT.isBefore(todayBeforeMidnight) || nowDT.equals(todayBeforeMidnight)){                    
-                            //     valueDT = valueDT.plusDays(1);
-                            //     mrtStartTime = mrtStartTime.plusDays(1);
-                            // }
-
-                            if (!nowDT.isAfter(todayBeforeMidnight) && (now.isAfter(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59)))){
-                                if (v.isAfter(LocalTime.MIDNIGHT)){                    
+                            if (now.getHour() >= 12 && now.getHour() <=23){
+                                if (v.getHour() >= 0 && v.getHour() < 12){                  
                                     valueDT = valueDT.plusDays(1);
                                     mrtStartTime = mrtStartTime.plusDays(1);
+                                } else {
+                                    mrtStartTime = mrtStartTime.plusDays(1);
+                                }
+                            } else if (now.getHour() < 12 && now.getHour() >= 0){
+                                if ((v.getHour() >= 12 && v.getHour() <= 23)){
+                                    valueDT = valueDT.minusDays(1);
                                 }
                             }
 
-
-                            // if (v.isAfter(midnight) && !now.isAfter(midnight)){
-                            //     valueDT = valueDT.plusDays(1);
-                            // }
-                            
-                            System.out.println("v.isAfter(LocalTime.MIDNIGHT): " +  v.isAfter(LocalTime.MIDNIGHT));
-                            System.out.println("nowDT.isAfter(todayBeforeMidnight): " +  nowDT.isAfter(todayBeforeMidnight));
-                            System.out.println("now.isAfter(midnight): " +  now.isAfter(midnight));
-                            System.out.println("now.equals(LocalTime.of(23,59)): " +  now.equals(LocalTime.of(23,59)));
-                            System.out.println("todayBeforeMidnight: " +  todayBeforeMidnight);
                             System.out.println("nowDT: " +  nowDT);
                             System.out.println("valueDT: " +  valueDT);
-                            System.out.println("nowDT.isBefore(valueDT): " +  nowDT.isBefore(valueDT));
-                            System.out.println("nowDT.isAfter(mrtStartTime): " +  nowDT.isAfter(mrtStartTime));
 
                             if (nowDT.isBefore(valueDT)){
                                 madeIT = true;
@@ -192,26 +149,21 @@ public class TimeCheck{
                             LocalDateTime nowDT = LocalDateTime.of(today, now);
                             LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                            if (now.isBefore(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59))){
-                                todayAfterMidnight = todayAfterMidnight.plusDays(1);   
-                            }
-
-                            if (!nowDT.isAfter(todayBeforeMidnight) && (now.isAfter(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59)))){
-                                if (v.isAfter(LocalTime.MIDNIGHT)){                    
+                            if (now.getHour() >= 12 && now.getHour() <=23){
+                                if (v.getHour() >= 0 && v.getHour() < 12){                  
                                     valueDT = valueDT.plusDays(1);
                                     mrtStartTime = mrtStartTime.plusDays(1);
+                                } else {
+                                    mrtStartTime = mrtStartTime.plusDays(1);
+                                }
+                            } else if (now.getHour() < 12 && now.getHour() >= 0){
+                                if ((v.getHour() >= 12 && v.getHour() <= 23)){
+                                    valueDT = valueDT.minusDays(1);
                                 }
                             }
 
-                            System.out.println("v.isAfter(LocalTime.MIDNIGHT): " +  v.isAfter(LocalTime.MIDNIGHT));
-                            System.out.println("nowDT.isAfter(todayBeforeMidnight): " +  nowDT.isAfter(todayBeforeMidnight));
-                            System.out.println("now.isAfter(midnight): " +  now.isAfter(midnight));
-                            System.out.println("now.equals(LocalTime.of(23,59)): " +  now.equals(LocalTime.of(23,59)));
-                            System.out.println("todayBeforeMidnight: " +  todayBeforeMidnight);
                             System.out.println("nowDT: " +  nowDT);
                             System.out.println("valueDT: " +  valueDT);
-                            System.out.println("nowDT.isBefore(valueDT): " +  nowDT.isBefore(valueDT));
-                            System.out.println("nowDT.isAfter(mrtStartTime): " +  nowDT.isAfter(mrtStartTime));
 
                             if (nowDT.isBefore(valueDT)){
                                 madeIT = true;
@@ -235,12 +187,8 @@ public class TimeCheck{
     public static ArrayList<String> checkInterchangeTime(ArrayList<String> arr, HashMap<String, ArrayList<HashMap<String,LocalTime>>> timeMap, LocalTime now){
         //get current system time - REPLACE BEFORE SUBMISSION
         // LocalTime now = LocalTime.now();
-        
-        LocalTime midnight = LocalTime.of(23,59);
-        // LocalTime oneMinuteBeforeMidnight = LocalTime.of(23,59);
+
         LocalDate today = LocalDate.now();
-        LocalDateTime todayBeforeMidnight = LocalDateTime.of(today, LocalTime.of(23,59));
-        LocalDateTime todayAfterMidnight = LocalDateTime.of(today, LocalTime.of(0,0));
         LocalDateTime mrtStartTime = LocalDateTime.of(today, LocalTime.of(6, 00));
 
         ArrayList<String> checkingInterchanges = new ArrayList<String>();
@@ -272,12 +220,17 @@ public class TimeCheck{
         }
 
         //if list only has 2 stations, that means no interchange needed, and original line has already been checked
-        if (checkingInterchanges.size() > 2){
+        if (checkingInterchanges.size() > 3){
             boolean madeIT = false;
+
+            System.out.println("Checking Interchange: " + checkingInterchanges);
             //now checking all the interchanges
             for (int j = 2; j < checkingInterchanges.size(); j+=2){
                 String origin = checkingInterchanges.get(j);
                 String destination = checkingInterchanges.get(j+1);
+
+                System.out.println("origin: " + origin);
+                System.out.println("destination: " + destination);
     
                 //retrieve the relevant dataset from the hashmap
                 ArrayList<HashMap<String,LocalTime>> temp = timeMap.get(origin);
@@ -310,16 +263,23 @@ public class TimeCheck{
                         LocalDateTime nowDT = LocalDateTime.of(today, now);
                         LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                        if (now.isBefore(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59))){
-                            todayAfterMidnight = todayAfterMidnight.plusDays(1);   
-                        }
 
-                        if (!nowDT.isAfter(todayBeforeMidnight) && (now.isAfter(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59)))){
-                            if (v.isAfter(LocalTime.MIDNIGHT)){                    
+                        if (now.getHour() >= 12 && now.getHour() <=23){
+                            if (v.getHour() >= 0 && v.getHour() < 12){                  
                                 valueDT = valueDT.plusDays(1);
                                 mrtStartTime = mrtStartTime.plusDays(1);
+                            } else {
+                                mrtStartTime = mrtStartTime.plusDays(1);
+                            }
+                        } else if (now.getHour() < 12 && now.getHour() >= 0){
+                            if ((v.getHour() >= 12 && v.getHour() <= 23)){
+                                valueDT = valueDT.minusDays(1);
                             }
                         }
+
+                        System.out.println("nowDT: " + nowDT);
+                        System.out.println("valueDT: " + valueDT);
+                        System.out.println("mrtStartTime: " + mrtStartTime);
     
                         if (nowDT.isBefore(valueDT)){
                             madeIT = true;
@@ -331,6 +291,7 @@ public class TimeCheck{
     
                     } else {
                         HashMap<String,LocalTime> tempHash = temp.get(l);
+                        System.out.println("tempHash: " + tempHash);
                         for (Map.Entry<String, LocalTime> entry : tempHash.entrySet()) {
                             String k = entry.getKey();
                             LocalTime v = entry.getValue();
@@ -344,46 +305,70 @@ public class TimeCheck{
                             }
     
                             if (bigger){
+                                System.out.println("Bigger");
                                 //Retrieve the localtime for the hashmap, convert to datetime and check if the current time is before the last train time
                                 if (stnCode > Integer.parseInt(stopNoOrigin)){
                                     LocalDateTime nowDT = LocalDateTime.of(today, now);
                                     LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                                    if (now.isBefore(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59))){
-                                        todayAfterMidnight = todayAfterMidnight.plusDays(1);   
-                                    }
-        
-                                    if (!nowDT.isAfter(todayBeforeMidnight) && (now.isAfter(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59)))){
-                                        if (v.isAfter(LocalTime.MIDNIGHT)){                    
+                                    if (now.getHour() >= 12 && now.getHour() <=23){
+                                        System.out.println("Im in");
+                                        if (v.getHour() >= 0 && v.getHour() < 12){
+                                            System.out.println("Im in x2");                  
                                             valueDT = valueDT.plusDays(1);
                                             mrtStartTime = mrtStartTime.plusDays(1);
+                                        } else {
+                                            System.out.println("Im in x1/2");    
+                                            mrtStartTime = mrtStartTime.plusDays(1);
+                                        }
+                                    } else if (now.getHour() < 12 && now.getHour() >= 0){
+                                        if ((v.getHour() >= 12 && v.getHour() <= 23)){
+                                            valueDT = valueDT.minusDays(1);
                                         }
                                     }
-    
+
+                                    System.out.println("nowDT: " + nowDT);
+                                    System.out.println("valueDT: " + valueDT);
+                                    System.out.println("mrtStartTime: " + mrtStartTime);
+
                                     if (nowDT.isBefore(valueDT)){
+                                        System.out.println("is it tho");
                                         madeIT = true;
                                     }
         
                                     if (nowDT.isAfter(mrtStartTime)){
+                                        System.out.println("is it tho x 2");
                                         madeIT = true;
                                     }
+
+
                                 }
                             } else {
+                                System.out.println("Smaller");
                                 if (stnCode < Integer.parseInt(stopNoOrigin)){
                                     LocalDateTime nowDT = LocalDateTime.of(today, now);
                                     LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                                    if (now.isBefore(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59))){
-                                        todayAfterMidnight = todayAfterMidnight.plusDays(1);   
-                                    }
-        
-                                    if (!nowDT.isAfter(todayBeforeMidnight) && (now.isAfter(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59)))){
-                                        if (v.isAfter(LocalTime.MIDNIGHT)){                    
+                                    if (now.getHour() >= 12 && now.getHour() <=23){
+                                        System.out.println("Im in");
+                                        if (v.getHour() >= 0 && v.getHour() < 12){
+                                            System.out.println("Im in x2");                  
                                             valueDT = valueDT.plusDays(1);
                                             mrtStartTime = mrtStartTime.plusDays(1);
+                                        } else {
+                                            System.out.println("Im in x1/2");    
+                                            mrtStartTime = mrtStartTime.plusDays(1);
+                                        }
+                                    } else if (now.getHour() < 12 && now.getHour() >= 0){
+                                        if ((v.getHour() >= 12 && v.getHour() <= 23)){
+                                            valueDT = valueDT.minusDays(1);
                                         }
                                     }
-    
+
+                                    System.out.println("nowDT: " + nowDT);
+                                    System.out.println("valueDT: " + valueDT);
+                                    System.out.println("mrtStartTime: " + mrtStartTime);
+   
                                     if (nowDT.isBefore(valueDT)){
                                         madeIT = true;
                                     }
@@ -403,6 +388,9 @@ public class TimeCheck{
                     //add to arraylist for failed interchanges for removal later and recalculation
                     failedInterchanges.add(checkingInterchanges.get(j-1));
                     failedInterchanges.add(origin);
+
+                    //only get one failed interchange at a time
+                    return failedInterchanges;
                 }
             }
         }
