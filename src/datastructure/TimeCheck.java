@@ -8,23 +8,28 @@ import java.math.BigInteger;
 
 public class TimeCheck{
 
-    public static HashMap<String, ArrayList<HashMap<String,LocalTime>>> createTimeMap(){
-        HashMap<String, ArrayList<HashMap<String,LocalTime>>> m = new HashMap<>();
+    /**
+     * Constructs a map of MRT stations with their last train timing.
+     * 
+     * @return The map of MRT stations with their last train timing.
+     */
+    public static HashMap<String, ArrayList<HashMap<String, LocalTime>>> createTimeMap() {
+        HashMap<String, ArrayList<HashMap<String, LocalTime>>> m = new HashMap<>();
         try (Scanner sc = new Scanner(new File("src/data/last_train_timing.txt"));) {
             while (sc.hasNext()) {
                 String[] arr = sc.nextLine().split(" ");
-                ArrayList<HashMap<String,LocalTime>> list = new ArrayList<>();
+                ArrayList<HashMap<String, LocalTime>> list = new ArrayList<>();
                 HashMap<String, LocalTime> destination = new HashMap<>();
-                if (!m.containsKey(arr[0])){
+                if (!m.containsKey(arr[0])) {
                     m.put(arr[0], list);
-                } 
+                }
 
                 LocalTime time = LocalTime.parse(arr[2]);
                 destination.put(arr[1], time);
 
-                if (!m.get(arr[0]).isEmpty()){
+                if (!m.get(arr[0]).isEmpty()) {
                     list = m.get(arr[0]);
-                } 
+                }
 
                 list.add(destination);
                 m.replace(arr[0], list);
@@ -34,7 +39,40 @@ public class TimeCheck{
             e.printStackTrace();
         }
 
-        //m output sample: {"DT27": [{"DT1" = 00:00}, ...], ...}
+        // m output sample: {"DT27": [{"DT1" = 00:00}, ...], ...}
+        return m;
+    }
+    
+        /**
+     * For Junit testing purposes.
+     */
+    public static HashMap<String, ArrayList<HashMap<String, LocalTime>>> createTimeMapTest() {
+        HashMap<String, ArrayList<HashMap<String, LocalTime>>> m = new HashMap<>();
+        try (Scanner sc = new Scanner(new File("C:/Users/User/Desktop/CS201G2T5/src/data/last_train_timing.txt"));) {
+            while (sc.hasNext()) {
+                String[] arr = sc.nextLine().split(" ");
+                ArrayList<HashMap<String, LocalTime>> list = new ArrayList<>();
+                HashMap<String, LocalTime> destination = new HashMap<>();
+                if (!m.containsKey(arr[0])) {
+                    m.put(arr[0], list);
+                }
+
+                LocalTime time = LocalTime.parse(arr[2]);
+                destination.put(arr[1], time);
+
+                if (!m.get(arr[0]).isEmpty()) {
+                    list = m.get(arr[0]);
+                }
+
+                list.add(destination);
+                m.replace(arr[0], list);
+            }
+        } catch (FileNotFoundException e) {
+            // swallow the exception
+            e.printStackTrace();
+        }
+
+        // m output sample: {"DT27": [{"DT1" = 00:00}, ...], ...}
         return m;
     }
 
@@ -196,26 +234,27 @@ public class TimeCheck{
         ArrayList<String> checkingInterchanges = new ArrayList<String>();
         ArrayList<String> failedInterchanges = new ArrayList<String>();
 
-        //retrieve station code and number
-        String firstStn = arr.get(0).substring(0,2);
+        // retrieve station code and number
+        String firstStn = arr.get(0).substring(0, 2);
 
-        //retrieves all important stations that needs to compare time
-        for (int i = 0; i < arr.size(); i++){
-            String currentLine = arr.get(i).substring(0,2);
+        // retrieves all important stations that needs to compare time
+        for (int i = 0; i < arr.size(); i++) {
+            // gets the current MRT station in the loop
+            String currentLine = arr.get(i).substring(0, 2);
 
-            if (i == 0){
+            if (i == 0) {
                 checkingInterchanges.add(arr.get(i));
             } 
 
-            if (!currentLine.equals(firstStn)){
-                if (i - 1 != 0){
-                    checkingInterchanges.add(arr.get(i-1));
+            if (!currentLine.equals(firstStn)) {
+                if (i - 1 != 0) {
+                    checkingInterchanges.add(arr.get(i - 1));
                 }
                 checkingInterchanges.add(arr.get(i));
-                firstStn = arr.get(i).substring(0,2); //change the first station to the new line
-            } else{ //if reached the end of the path, add the last station
+                firstStn = arr.get(i).substring(0, 2); // change the first station to the new line
+            } else { // if reached the end of the path, add the last station
                 int temp = i + 1;
-                if (temp == arr.size()){
+                if (temp == arr.size()) {
                     checkingInterchanges.add(arr.get(i));
                 }
             }
@@ -246,6 +285,7 @@ public class TimeCheck{
                         stopNoOrigin = origin.substring(2,3);
                     } else {
                         stopNoOrigin = origin.substring(2,4);
+
                     }
         
                     if (destination.length() < 4){
@@ -343,8 +383,6 @@ public class TimeCheck{
                                             System.out.println("is it tho x 2");
                                             madeIT = true;
                                         }
-
-
                                     }
                                 } else {
                                     System.out.println("Smaller");
