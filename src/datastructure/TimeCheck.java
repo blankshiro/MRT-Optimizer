@@ -55,9 +55,11 @@ public class TimeCheck{
 
     //checks and returns if first station can be made, if not return false
     public static boolean checkFirstStation(String start, String end, HashMap<String, ArrayList<HashMap<String,LocalTime>>> timeMap, LocalTime now){
-        LocalTime midnight = LocalTime.of(0,0);
+        LocalTime midnight = LocalTime.of(23,59);
+        // LocalTime oneMinuteBeforeMidnight = LocalTime.of(23,59);
         LocalDate today = LocalDate.now();
-        LocalDateTime todayMidnight = LocalDateTime.of(today, LocalTime.of(23,59));
+        LocalDateTime todayBeforeMidnight = LocalDateTime.of(today, LocalTime.of(23,59));
+        LocalDateTime todayAfterMidnight = LocalDateTime.of(today, LocalTime.of(0,0));
         LocalDateTime mrtStartTime = LocalDateTime.of(today, LocalTime.of(6, 00));
 
         //retrieve the relevant dataset from the hashmap
@@ -93,19 +95,36 @@ public class TimeCheck{
                 LocalDateTime nowDT = LocalDateTime.of(today, now);
                 LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                if (v.isAfter(midnight)){
-                    if (!nowDT.isAfter(todayMidnight)){
+                if (now.isBefore(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59))){
+                    todayAfterMidnight = todayAfterMidnight.plusDays(1);   
+                }
+
+                // if (v.isAfter(LocalTime.MIDNIGHT) && nowDT.isBefore(todayBeforeMidnight) || nowDT.equals(todayBeforeMidnight)){                    
+                //     valueDT = valueDT.plusDays(1);
+                //     mrtStartTime = mrtStartTime.plusDays(1);
+                // }
+                if (!nowDT.isAfter(todayBeforeMidnight) && (now.isAfter(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59)))){
+                    if (v.isAfter(LocalTime.MIDNIGHT)){                    
                         valueDT = valueDT.plusDays(1);
+                        mrtStartTime = mrtStartTime.plusDays(1);
                     }
                 }
-                System.out.println("todayMidnight: " +  todayMidnight);
+                
+                System.out.println("nowDT.isAfter(todayBeforeMidnight): " +  nowDT.isAfter(todayBeforeMidnight));
+                System.out.println("v.isAfter(LocalTime.MIDNIGHT): " +  v.isAfter(LocalTime.MIDNIGHT));
+                System.out.println("now.isAfter(midnight): " +  now.isAfter(midnight));
+                System.out.println("now.equals(LocalTime.of(23,59)): " +  now.equals(LocalTime.of(23,59)));
+                System.out.println("todayBeforeMidnight: " +  todayBeforeMidnight);
                 System.out.println("nowDT: " +  nowDT);
                 System.out.println("valueDT: " +  valueDT);
+                System.out.println("nowDT.isBefore(valueDT): " +  nowDT.isBefore(valueDT));
 
                 if (nowDT.isBefore(valueDT)){
-                    if (nowDT.isAfter(mrtStartTime)){
-                        madeIT = true;
-                    }
+                    madeIT = true;
+                }
+
+                if (nowDT.isAfter(mrtStartTime)){
+                    madeIT = true;
                 }
 
             } else {
@@ -128,19 +147,44 @@ public class TimeCheck{
                             LocalDateTime nowDT = LocalDateTime.of(today, now);
                             LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                            if (v.isAfter(midnight)){
-                                if (!nowDT.isAfter(todayMidnight)){
+                            System.out.println("now.isBefore(LocalTime.of(23,59)): " + now.isBefore(LocalTime.of(23,59)));
+                            if (now.isBefore(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59))){
+                                todayAfterMidnight = todayAfterMidnight.plusDays(1);   
+                            }
+
+                            // if (v.isAfter(LocalTime.MIDNIGHT) && nowDT.isBefore(todayBeforeMidnight) || nowDT.equals(todayBeforeMidnight)){                    
+                            //     valueDT = valueDT.plusDays(1);
+                            //     mrtStartTime = mrtStartTime.plusDays(1);
+                            // }
+
+                            if (!nowDT.isAfter(todayBeforeMidnight) && (now.isAfter(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59)))){
+                                if (v.isAfter(LocalTime.MIDNIGHT)){                    
                                     valueDT = valueDT.plusDays(1);
+                                    mrtStartTime = mrtStartTime.plusDays(1);
                                 }
                             }
-                            System.out.println("todayMidnight: " +  todayMidnight);
+
+
+                            // if (v.isAfter(midnight) && !now.isAfter(midnight)){
+                            //     valueDT = valueDT.plusDays(1);
+                            // }
+                            
+                            System.out.println("v.isAfter(LocalTime.MIDNIGHT): " +  v.isAfter(LocalTime.MIDNIGHT));
+                            System.out.println("nowDT.isAfter(todayBeforeMidnight): " +  nowDT.isAfter(todayBeforeMidnight));
+                            System.out.println("now.isAfter(midnight): " +  now.isAfter(midnight));
+                            System.out.println("now.equals(LocalTime.of(23,59)): " +  now.equals(LocalTime.of(23,59)));
+                            System.out.println("todayBeforeMidnight: " +  todayBeforeMidnight);
                             System.out.println("nowDT: " +  nowDT);
                             System.out.println("valueDT: " +  valueDT);
+                            System.out.println("nowDT.isBefore(valueDT): " +  nowDT.isBefore(valueDT));
+                            System.out.println("nowDT.isAfter(mrtStartTime): " +  nowDT.isAfter(mrtStartTime));
 
                             if (nowDT.isBefore(valueDT)){
-                                if (nowDT.isAfter(mrtStartTime)){
-                                    madeIT = true;
-                                }
+                                madeIT = true;
+                            }
+
+                            if (nowDT.isAfter(mrtStartTime)){
+                                madeIT = true;
                             }
                         }
                     } else {
@@ -148,16 +192,33 @@ public class TimeCheck{
                             LocalDateTime nowDT = LocalDateTime.of(today, now);
                             LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                            if (v.isAfter(midnight)){
-                                if (!nowDT.isAfter(todayMidnight)){
+                            if (now.isBefore(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59))){
+                                todayAfterMidnight = todayAfterMidnight.plusDays(1);   
+                            }
+
+                            if (!nowDT.isAfter(todayBeforeMidnight) && (now.isAfter(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59)))){
+                                if (v.isAfter(LocalTime.MIDNIGHT)){                    
                                     valueDT = valueDT.plusDays(1);
+                                    mrtStartTime = mrtStartTime.plusDays(1);
                                 }
                             }
 
+                            System.out.println("v.isAfter(LocalTime.MIDNIGHT): " +  v.isAfter(LocalTime.MIDNIGHT));
+                            System.out.println("nowDT.isAfter(todayBeforeMidnight): " +  nowDT.isAfter(todayBeforeMidnight));
+                            System.out.println("now.isAfter(midnight): " +  now.isAfter(midnight));
+                            System.out.println("now.equals(LocalTime.of(23,59)): " +  now.equals(LocalTime.of(23,59)));
+                            System.out.println("todayBeforeMidnight: " +  todayBeforeMidnight);
+                            System.out.println("nowDT: " +  nowDT);
+                            System.out.println("valueDT: " +  valueDT);
+                            System.out.println("nowDT.isBefore(valueDT): " +  nowDT.isBefore(valueDT));
+                            System.out.println("nowDT.isAfter(mrtStartTime): " +  nowDT.isAfter(mrtStartTime));
+
                             if (nowDT.isBefore(valueDT)){
-                                if (nowDT.isAfter(mrtStartTime)){
-                                    madeIT = true;
-                                }
+                                madeIT = true;
+                            }
+
+                            if (nowDT.isAfter(mrtStartTime)){
+                                madeIT = true;
                             }
                         }
                     }
@@ -174,9 +235,12 @@ public class TimeCheck{
     public static ArrayList<String> checkInterchangeTime(ArrayList<String> arr, HashMap<String, ArrayList<HashMap<String,LocalTime>>> timeMap, LocalTime now){
         //get current system time - REPLACE BEFORE SUBMISSION
         // LocalTime now = LocalTime.now();
-        LocalTime midnight = LocalTime.of(0,0);
+        
+        LocalTime midnight = LocalTime.of(23,59);
+        // LocalTime oneMinuteBeforeMidnight = LocalTime.of(23,59);
         LocalDate today = LocalDate.now();
-        LocalDateTime todayMidnight = LocalDateTime.of(today, LocalTime.of(23,59));
+        LocalDateTime todayBeforeMidnight = LocalDateTime.of(today, LocalTime.of(23,59));
+        LocalDateTime todayAfterMidnight = LocalDateTime.of(today, LocalTime.of(0,0));
         LocalDateTime mrtStartTime = LocalDateTime.of(today, LocalTime.of(6, 00));
 
         ArrayList<String> checkingInterchanges = new ArrayList<String>();
@@ -245,17 +309,24 @@ public class TimeCheck{
                         LocalTime v = temp.get(l).get(destination);
                         LocalDateTime nowDT = LocalDateTime.of(today, now);
                         LocalDateTime valueDT = LocalDateTime.of(today, v);
-    
-                        if (v.isAfter(midnight)){
-                            if (!nowDT.isAfter(todayMidnight)){
+
+                        if (now.isBefore(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59))){
+                            todayAfterMidnight = todayAfterMidnight.plusDays(1);   
+                        }
+
+                        if (!nowDT.isAfter(todayBeforeMidnight) && (now.isAfter(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59)))){
+                            if (v.isAfter(LocalTime.MIDNIGHT)){                    
                                 valueDT = valueDT.plusDays(1);
+                                mrtStartTime = mrtStartTime.plusDays(1);
                             }
                         }
     
                         if (nowDT.isBefore(valueDT)){
-                            if (nowDT.isAfter(mrtStartTime)){
-                                madeIT = true;
-                            }
+                            madeIT = true;
+                        }
+
+                        if (nowDT.isAfter(mrtStartTime)){
+                            madeIT = true;
                         }
     
                     } else {
@@ -277,34 +348,48 @@ public class TimeCheck{
                                 if (stnCode > Integer.parseInt(stopNoOrigin)){
                                     LocalDateTime nowDT = LocalDateTime.of(today, now);
                                     LocalDateTime valueDT = LocalDateTime.of(today, v);
-    
-                                    if (v.isAfter(midnight)){
-                                        if (!nowDT.isAfter(todayMidnight)){
+
+                                    if (now.isBefore(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59))){
+                                        todayAfterMidnight = todayAfterMidnight.plusDays(1);   
+                                    }
+        
+                                    if (!nowDT.isAfter(todayBeforeMidnight) && (now.isAfter(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59)))){
+                                        if (v.isAfter(LocalTime.MIDNIGHT)){                    
                                             valueDT = valueDT.plusDays(1);
+                                            mrtStartTime = mrtStartTime.plusDays(1);
                                         }
                                     }
     
                                     if (nowDT.isBefore(valueDT)){
-                                        if (nowDT.isAfter(mrtStartTime)){
-                                            madeIT = true;
-                                        }
+                                        madeIT = true;
+                                    }
+        
+                                    if (nowDT.isAfter(mrtStartTime)){
+                                        madeIT = true;
                                     }
                                 }
                             } else {
                                 if (stnCode < Integer.parseInt(stopNoOrigin)){
                                     LocalDateTime nowDT = LocalDateTime.of(today, now);
                                     LocalDateTime valueDT = LocalDateTime.of(today, v);
-    
-                                    if (v.isAfter(midnight)){
-                                        if (!nowDT.isAfter(todayMidnight)){
+
+                                    if (now.isBefore(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59))){
+                                        todayAfterMidnight = todayAfterMidnight.plusDays(1);   
+                                    }
+        
+                                    if (!nowDT.isAfter(todayBeforeMidnight) && (now.isAfter(LocalTime.of(23,59)) || now.equals(LocalTime.of(23,59)))){
+                                        if (v.isAfter(LocalTime.MIDNIGHT)){                    
                                             valueDT = valueDT.plusDays(1);
+                                            mrtStartTime = mrtStartTime.plusDays(1);
                                         }
                                     }
     
                                     if (nowDT.isBefore(valueDT)){
-                                        if (nowDT.isAfter(mrtStartTime)){
-                                            madeIT = true;
-                                        }
+                                        madeIT = true;
+                                    }
+        
+                                    if (nowDT.isAfter(mrtStartTime)){
+                                        madeIT = true;
                                     }
                                 }
                             }

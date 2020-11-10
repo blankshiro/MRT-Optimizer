@@ -36,10 +36,11 @@ public class App {
 
                 //check if the start station have trains running to begin with
                 // LocalTime now = LocalTime.now();
-                LocalTime now = LocalTime.of(23,59);
+                // LocalTime now = LocalTime.of(23,59);
+                LocalTime now = LocalTime.of(00,15);
 
                 boolean validTime = TimeCheck.checkFirstStation(start, end, timeMap, now);
-                System.out.println(validTime);
+                System.out.println("validTime: " + validTime);
 
                 if (validTime){
                     network.solve(adjMap, start);
@@ -62,7 +63,7 @@ public class App {
                         for (int i = 0; i < failedInterchanges.size(); i+=2){
                             String stnOne = failedInterchanges.get(i);
                             String stnTwo = failedInterchanges.get(i+1);
-                            DataUtilities.removeStationFromNeighbours(adjMap, stnOne, stnTwo);
+                            System.out.println("DataUtility: " + DataUtilities.removeStationFromNeighbours(adjMap, stnOne, stnTwo));
                         }
 
                         failedInterchanges.clear();
