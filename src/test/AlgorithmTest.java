@@ -1,6 +1,7 @@
 package test;
 
 import java.util.*;
+import java.time.*;
 import datastructure.*;
 
 import org.junit.jupiter.api.*;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AlgorithmTest {
 
     HashMap<String, List<Station>> adjMapTest = DataUtilities.createAdjMapTest();
+    HashMap<String, ArrayList<HashMap<String, LocalTime>>> timeMap = TimeCheck.createTimeMapTest();
     int numOfStationsTest = adjMapTest.size();
 
     Graph networkTest = new Graph(numOfStationsTest);
@@ -46,6 +48,24 @@ public class AlgorithmTest {
         assertEquals(expectedPath, firstPath);
     }
 
+    @Test
+    public void assertBinaryRouteBeforeLastTiming() {
+        networkTest.solve(adjMapTest, start);
+        ArrayList<String> firstPath = new ArrayList<>();
+        DataUtilities.getPath(networkTest.getParentMap(), start, end, end, firstPath);
+        Boolean check = true;
+        assertEquals(check, TimeCheck.makeStnTime(firstPath, timeMap, LocalTime.of(23, 30)));
+    }
+
+    @Test
+    public void assertBinaryRouteAfterLastTiming2() {
+        networkTest.solve(adjMapTest, start);
+        ArrayList<String> firstPath = new ArrayList<>();
+        DataUtilities.getPath(networkTest.getParentMap(), start, end, end, firstPath);
+        Boolean check = false;
+        assertEquals(check, TimeCheck.makeStnTime(firstPath, timeMap, LocalTime.of(23, 40)));
+    }
+
     String start2 = "NS1";
     String end2 = "DT5";
 
@@ -75,7 +95,7 @@ public class AlgorithmTest {
     public void assertExpectedPath3() {
         networkTest.solve(adjMapTest, start3);
         ArrayList<String> firstPath3 = new ArrayList<>();
-        DataUtilities.getPath(networkTest.getParentMap(), start, end3, end3, firstPath3);
+        DataUtilities.getPath(networkTest.getParentMap(), start3, end3, end3, firstPath3);
 
         ArrayList<String> expectedPath = new ArrayList<>();
         expectedPath.add("EW15");
@@ -88,21 +108,63 @@ public class AlgorithmTest {
         assertEquals(expectedPath, firstPath3);
     }
 
+    String start4 = "NE1";
+    String end4 = "CC15";
+    
     @Test
-    public void assertAlternatePath() {
-        networkTest.solve(adjMapTest, start3);
-        ArrayList<String> alternatePath = new ArrayList<>();
-        DataUtilities.getPath(networkTest.getParentMap2(), start3, end3, end3, alternatePath);
+    public void assertExpectedPath4() {
+        networkTest.solve(adjMapTest, start4);
+        ArrayList<String> firstPath4 = new ArrayList<>();
+        DataUtilities.getPath(networkTest.getParentMap(), start4, end4, end4, firstPath4);
 
-        ArrayList<String> expectedPath = new ArrayList<>();
-        expectedPath.add("EW15");
-        expectedPath.add("EW16");
-        expectedPath.add("NE3");
-        expectedPath.add("NE4");
-        expectedPath.add("NE5");
-        expectedPath.add("NE6");
-        expectedPath.add("NE7");
-        expectedPath.add("DT12");
-        assertEquals(expectedPath, alternatePath);
+        String[] expectedPath = {"NE1", "NE3", "NE4", "NE5", "NE6", "NE7", "NE8", "NE9", "NE10", "NE11", "NE12", "CC13", "CC14", "CC15"};
+        assertArrayEquals(expectedPath, firstPath4.toArray());
+        }
+
+    String start5 = "EW1";
+    String end5 = "DT27";
+
+    @Test
+    public void assertExpectedPath5() {
+        networkTest.solve(adjMapTest, start5);
+        ArrayList<String> firstPath5 = new ArrayList<>();
+        DataUtilities.getPath(networkTest.getParentMap(), start5, end5, end5, firstPath5);
+
+        String[] expectedPath = {"EW1", "EW2", "DT32", "DT31", "DT30", "DT29", "DT28", "DT27"};
+        assertArrayEquals(expectedPath, firstPath5.toArray());
     }
+
+    String start6 = "DT6";
+    String end6 = "CC13";
+
+    @Test
+    public void assertExpectedPath6() {
+        networkTest.solve(adjMapTest, start6);
+        ArrayList<String> firstPath6 = new ArrayList<>();
+        DataUtilities.getPath(networkTest.getParentMap(), start6, end6, end6, firstPath6);
+
+        String[] expectedPath = { "DT6", "DT7", "DT8", "DT9", "CC19", "CC17", "CC16", "CC15", "CC14", "CC13" };
+        assertArrayEquals(expectedPath, firstPath6.toArray());
+    }
+
+
+    // @Test
+    // public void assertAlternatePath() {
+    //     networkTest.solve(adjMapTest, start3);
+    //     ArrayList<String> alternatePath = new ArrayList<>();
+    //     DataUtilities.getPath(networkTest.getParentMap2(), start3, end3, end3, alternatePath);
+
+    //     ArrayList<String> expectedPath = new ArrayList<>();
+    //     expectedPath.add("EW15");
+    //     expectedPath.add("EW16");
+    //     expectedPath.add("NE3");
+    //     expectedPath.add("NE4");
+    //     expectedPath.add("NE5");
+    //     expectedPath.add("NE6");
+    //     expectedPath.add("NE7");
+    //     expectedPath.add("DT12");
+    //     assertEquals(expectedPath, alternatePath);
+    // }
+
+
 }

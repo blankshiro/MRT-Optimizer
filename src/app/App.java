@@ -27,7 +27,6 @@ public class App {
             System.out.println("=============================================================================");
 
             if (isValid(start) && isValid(end)) {
-
                 //check if the start station have trains running to begin with
                 // LocalTime now = LocalTime.now();
 
@@ -51,6 +50,7 @@ public class App {
                     System.out.printf("Best path from %s to %s is: ", start, end);
                     System.out.print(firstPath);
                     System.out.println();
+
 
                     while(firstPath.size() != 0 && failedInterchanges.size() != 0){
                         String stnOne = failedInterchanges.get(0);
@@ -108,7 +108,6 @@ public class App {
         if (station.equals("DT4") || station.equals("NE2") || station.equals("NS6") || station.equals("NS12") || station.equals("CC18")){
             return false;
         }
-
 
         String line = station.substring(0, 2);
         String num = station.substring(2);
