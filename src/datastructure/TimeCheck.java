@@ -224,12 +224,14 @@ public class TimeCheck{
     }
 
     //Input: String array of station names
-    public static ArrayList<String> checkInterchangeTime(ArrayList<String> arr, HashMap<String, ArrayList<HashMap<String,LocalTime>>> timeMap, LocalTime now){
+    public static ArrayList<String> checkInterchangeTime(ArrayList<String> arr, HashMap<String, ArrayList<HashMap<String,LocalTime>>> timeMap, HashMap<String, Integer> distMap, LocalTime now){
         //get current system time - REPLACE BEFORE SUBMISSION
         // LocalTime now = LocalTime.now();
 
         LocalDate today = LocalDate.now();
         LocalDateTime mrtStartTime = LocalDateTime.of(today, LocalTime.of(6, 00));
+
+        LocalTime timeHolder = now;
 
         ArrayList<String> checkingInterchanges = new ArrayList<String>();
         ArrayList<String> failedInterchanges = new ArrayList<String>();
@@ -264,6 +266,13 @@ public class TimeCheck{
         if (checkingInterchanges.size() > 3){
             boolean madeIT = false;
 
+            //get time at which person will arrive at interchange
+            String destinationStation = checkingInterchanges.get(1);
+            int timeTaken = distMap.get(destinationStation);
+
+            timeHolder = timeHolder.plusSeconds(timeTaken);
+            System.out.println("Time Holder: " + timeHolder);
+
             System.out.println("Checking Interchange: " + checkingInterchanges);
             //now checking all the interchanges
             for (int j = 2; j < checkingInterchanges.size(); j+=2){
@@ -273,6 +282,13 @@ public class TimeCheck{
 
                     System.out.println("origin: " + origin);
                     System.out.println("destination: " + destination);
+
+                    //on the first interchange
+                    if (j >= 4){
+                        timeHolder = now; //reset time to original time
+                        timeTaken = distMap.get(destination);
+                        timeHolder = timeHolder.plusSeconds(timeTaken);
+                    }
         
                     //retrieve the relevant dataset from the hashmap
                     ArrayList<HashMap<String,LocalTime>> temp = timeMap.get(origin);
@@ -303,18 +319,17 @@ public class TimeCheck{
                     for (int l = 0; l < temp.size(); l++){
                         if (temp.get(l).containsKey(destination)){
                             LocalTime v = temp.get(l).get(destination);
-                            LocalDateTime nowDT = LocalDateTime.of(today, now);
+                            LocalDateTime nowDT = LocalDateTime.of(today, timeHolder);
                             LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-
-                            if (now.getHour() >= 12 && now.getHour() <=23){
+                            if (timeHolder.getHour() >= 12 && timeHolder.getHour() <=23){
                                 if (v.getHour() >= 0 && v.getHour() < 12){                  
                                     valueDT = valueDT.plusDays(1);
                                     mrtStartTime = mrtStartTime.plusDays(1);
                                 } else {
                                     mrtStartTime = mrtStartTime.plusDays(1);
                                 }
-                            } else if (now.getHour() < 12 && now.getHour() >= 0){
+                            } else if (timeHolder.getHour() < 12 && timeHolder.getHour() >= 0){
                                 if ((v.getHour() >= 12 && v.getHour() <= 23)){
                                     valueDT = valueDT.minusDays(1);
                                 }
@@ -354,7 +369,7 @@ public class TimeCheck{
                                         LocalDateTime nowDT = LocalDateTime.of(today, now);
                                         LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                                        if (now.getHour() >= 12 && now.getHour() <=23){
+                                        if (timeHolder.getHour() >= 12 && timeHolder.getHour() <=23){
                                             System.out.println("Im in");
                                             if (v.getHour() >= 0 && v.getHour() < 12){
                                                 System.out.println("Im in x2");                  
@@ -364,7 +379,7 @@ public class TimeCheck{
                                                 System.out.println("Im in x1/2");    
                                                 mrtStartTime = mrtStartTime.plusDays(1);
                                             }
-                                        } else if (now.getHour() < 12 && now.getHour() >= 0){
+                                        } else if (timeHolder.getHour() < 12 && timeHolder.getHour() >= 0){
                                             if ((v.getHour() >= 12 && v.getHour() <= 23)){
                                                 valueDT = valueDT.minusDays(1);
                                             }
@@ -390,7 +405,7 @@ public class TimeCheck{
                                         LocalDateTime nowDT = LocalDateTime.of(today, now);
                                         LocalDateTime valueDT = LocalDateTime.of(today, v);
 
-                                        if (now.getHour() >= 12 && now.getHour() <=23){
+                                        if (timeHolder.getHour() >= 12 && timeHolder.getHour() <=23){
                                             System.out.println("Im in");
                                             if (v.getHour() >= 0 && v.getHour() < 12){
                                                 System.out.println("Im in x2");                  
@@ -400,7 +415,7 @@ public class TimeCheck{
                                                 System.out.println("Im in x1/2");    
                                                 mrtStartTime = mrtStartTime.plusDays(1);
                                             }
-                                        } else if (now.getHour() < 12 && now.getHour() >= 0){
+                                        } else if (timeHolder.getHour() < 12 && timeHolder.getHour() >= 0){
                                             if ((v.getHour() >= 12 && v.getHour() <= 23)){
                                                 valueDT = valueDT.minusDays(1);
                                             }
