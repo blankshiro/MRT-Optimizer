@@ -8,9 +8,13 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * AlgorithmTest class. Please note before testing: Go to DataUtilities.java and
- * change the path of the traveltime.txt file in the createAdjMapTest to your
- * actual file path.
+ * AlgorithmTest class. Please note before testing:
+ * 
+ * Go to DataUtilities.java and change the path of the traveltime.txt file in
+ * the createAdjMapTest to your actual file path.
+ * 
+ * Go to TimeCheck.java and change the path of last_train_timing.txt file in the
+ * createTimeMapTest to your actual file path.
  */
 public class AlgorithmTest {
     /** Construct the adjacency map for testing. */
@@ -68,7 +72,8 @@ public class AlgorithmTest {
         ArrayList<String> firstPath = new ArrayList<>();
         DataUtilities.getPath(networkTest.getParentMap(), start, end, end, firstPath);
         distMapTest = networkTest.getDistMap();
-        ArrayList<String> failedInterchange = TimeCheck.checkInterchangeTime(firstPath, timeMapTest, distMapTest, LocalTime.of(23, 50));
+        ArrayList<String> failedInterchange = TimeCheck.checkInterchangeTime(firstPath, timeMapTest, distMapTest,
+                LocalTime.of(23, 50));
         assertEquals(0, failedInterchange.size());
     }
 
@@ -122,7 +127,8 @@ public class AlgorithmTest {
         ArrayList<String> firstPath2 = new ArrayList<>();
         DataUtilities.getPath(networkTest.getParentMap(), start2, end2, end2, firstPath2);
         distMapTest = networkTest.getDistMap();
-        ArrayList<String> failedInterchange = TimeCheck.checkInterchangeTime(firstPath2, timeMapTest, distMapTest, LocalTime.of(22, 30));
+        ArrayList<String> failedInterchange = TimeCheck.checkInterchangeTime(firstPath2, timeMapTest, distMapTest,
+                LocalTime.of(22, 30));
         assertEquals(0, failedInterchange.size());
     }
 
@@ -174,7 +180,8 @@ public class AlgorithmTest {
         ArrayList<String> firstPath3 = new ArrayList<>();
         DataUtilities.getPath(networkTest.getParentMap(), start3, end3, end3, firstPath3);
         distMapTest = networkTest.getDistMap();
-        ArrayList<String> failedInterchange = TimeCheck.checkInterchangeTime(firstPath3, timeMapTest, distMapTest, LocalTime.of(0, 0));
+        ArrayList<String> failedInterchange = TimeCheck.checkInterchangeTime(firstPath3, timeMapTest, distMapTest,
+                LocalTime.of(0, 0));
         assertEquals(0, failedInterchange.size());
     }
 
@@ -198,16 +205,17 @@ public class AlgorithmTest {
 
     String start4 = "NE1";
     String end4 = "CC15";
-    
+
     @Test
     public void assertNonBinaryRoute3() {
         networkTest.solve(adjMapTest, start4);
         ArrayList<String> firstPath4 = new ArrayList<>();
         DataUtilities.getPath(networkTest.getParentMap(), start4, end4, end4, firstPath4);
 
-        String[] expectedPath = {"NE1", "NE3", "NE4", "NE5", "NE6", "NE7", "NE8", "NE9", "NE10", "NE11", "NE12", "CC13", "CC14", "CC15"};
+        String[] expectedPath = { "NE1", "NE3", "NE4", "NE5", "NE6", "NE7", "NE8", "NE9", "NE10", "NE11", "NE12",
+                "CC13", "CC14", "CC15" };
         assertArrayEquals(expectedPath, firstPath4.toArray());
-        }
+    }
 
     @Test
     public void assertNonBinaryRoute3CheckFirstStationValid() {
@@ -237,7 +245,8 @@ public class AlgorithmTest {
         ArrayList<String> firstPath4 = new ArrayList<>();
         DataUtilities.getPath(networkTest.getParentMap(), start4, end4, end4, firstPath4);
         distMapTest = networkTest.getDistMap();
-        ArrayList<String> failedInterchange = TimeCheck.checkInterchangeTime(firstPath4, timeMapTest, distMapTest, LocalTime.of(23, 50));
+        ArrayList<String> failedInterchange = TimeCheck.checkInterchangeTime(firstPath4, timeMapTest, distMapTest,
+                LocalTime.of(23, 50));
         assertEquals(0, failedInterchange.size());
     }
 
@@ -250,7 +259,7 @@ public class AlgorithmTest {
         ArrayList<String> firstPath5 = new ArrayList<>();
         DataUtilities.getPath(networkTest.getParentMap(), start5, end5, end5, firstPath5);
 
-        String[] expectedPath = {"EW1", "EW2", "DT32", "DT31", "DT30", "DT29", "DT28", "DT27"};
+        String[] expectedPath = { "EW1", "EW2", "DT32", "DT31", "DT30", "DT29", "DT28", "DT27" };
         assertArrayEquals(expectedPath, firstPath5.toArray());
     }
 
@@ -268,7 +277,7 @@ public class AlgorithmTest {
     @Test
     public void assertNonBinaryRoute4CheckFirstStationInvalid() {
         networkTest.solve(adjMapTest, start5);
-        ArrayList<String> firstPath5= new ArrayList<>();
+        ArrayList<String> firstPath5 = new ArrayList<>();
         DataUtilities.getPath(networkTest.getParentMap(), start5, end5, end5, firstPath5);
         Boolean check = false;
         // last train timing of EW1 is 23:23
@@ -282,7 +291,8 @@ public class AlgorithmTest {
         ArrayList<String> firstPath5 = new ArrayList<>();
         DataUtilities.getPath(networkTest.getParentMap(), start5, end5, end5, firstPath5);
         distMapTest = networkTest.getDistMap();
-        ArrayList<String> failedInterchange = TimeCheck.checkInterchangeTime(firstPath5, timeMapTest, distMapTest, LocalTime.of(23, 20));
+        ArrayList<String> failedInterchange = TimeCheck.checkInterchangeTime(firstPath5, timeMapTest, distMapTest,
+                LocalTime.of(23, 20));
         assertEquals(0, failedInterchange.size());
     }
 
@@ -327,8 +337,10 @@ public class AlgorithmTest {
         ArrayList<String> firstPath6 = new ArrayList<>();
         DataUtilities.getPath(networkTest.getParentMap(), start6, end6, end6, firstPath6);
         distMapTest = networkTest.getDistMap();
-        ArrayList<String> failedInterchange = TimeCheck.checkInterchangeTime(firstPath6, timeMapTest, distMapTest, LocalTime.of(23, 40));
-        // this should fail because the user cannot make it in time for CC13 and the failed interchange is [DT9, CC12]
+        ArrayList<String> failedInterchange = TimeCheck.checkInterchangeTime(firstPath6, timeMapTest, distMapTest,
+                LocalTime.of(23, 40));
+        // this should fail because the user cannot make it in time for CC13 and the
+        // failed interchange is [DT9, CC12]
         assertEquals(2, failedInterchange.size());
     }
 
