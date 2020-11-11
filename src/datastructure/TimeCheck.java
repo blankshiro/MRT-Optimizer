@@ -81,14 +81,14 @@ public class TimeCheck {
     }
 
     /**
-     * Checks whether the user can reach the first station in time.
+     * Checks whether the user can make it in time for the first MRT station.
      * 
      * @param start   The starting station.
-     * @param end     The destination station.
+     * @param end     The adjacent station.
      * @param timeMap The last train timing map.
      * @param now     The time now.
-     * @return True if the user can make it to the train station in time. Otherwise,
-     *         return no.
+     * @return True if the user can make it to the first station. Otherwise, return
+     *         false.
      */
     public static boolean checkFirstStation(String start, String end,
             HashMap<String, ArrayList<HashMap<String, LocalTime>>> timeMap, LocalTime now) {
@@ -101,8 +101,8 @@ public class TimeCheck {
         String stopNoOrigin = "";
         String stopNoDestination = "";
 
-        // check if which direction the route is taking, i.e. if the next stop if before
-        // or after the current stop
+
+        /** Take the int value in the train codes. */
         if (start.length() < 4) {
             stopNoOrigin = start.substring(2, 3);
         } else {
@@ -228,18 +228,18 @@ public class TimeCheck {
     }
 
     /**
-     * Checks whether the user has to change stations at an interchange and return
-     * the ArrayList of interchanges that is past the last train timing.
+     * Checks whether you can make it in time to the destination station if the user
+     * has to switch trains at an train interchange. This method will look for the
+     * list of interchanges from the generated path and filter out the interchanges
+     * that the user cannot use.
      * 
-     * @param arr     The list of stations to check.
+     * @param arr     The shortest path generated.
      * @param timeMap The last train timing map.
-     * @param distMap The distance map.
      * @param now     The time now.
-     * @return The ArrayList of interchanges that is past the last train timing.
+     * @return The ArrayList of interchanges that the user cannot use.
      */
     public static ArrayList<String> checkInterchangeTime(ArrayList<String> arr,
-            HashMap<String, ArrayList<HashMap<String, LocalTime>>> timeMap, HashMap<String, Integer> distMap,
-            LocalTime now) {
+            HashMap<String, ArrayList<HashMap<String, LocalTime>>> timeMap, LocalTime now) {
         // get current system time - REPLACE BEFORE SUBMISSION
         // LocalTime now = LocalTime.now();
 
@@ -303,7 +303,6 @@ public class TimeCheck {
 
                     // retrieve the relevant dataset from the hashmap
                     ArrayList<HashMap<String, LocalTime>> temp = timeMap.get(origin);
-
                     String stopNoOrigin = "";
                     String stopNoDestination = "";
 
@@ -346,7 +345,7 @@ public class TimeCheck {
                                     valueDT = valueDT.minusDays(1);
                                 }
                             }
-        
+                            
                             if (nowDT.isBefore(valueDT)){
                                 madeIT = true;
                             }
@@ -357,6 +356,7 @@ public class TimeCheck {
 
                         } else {
                             HashMap<String,LocalTime> tempHash = temp.get(l);
+                            
                             for (Map.Entry<String, LocalTime> entry : tempHash.entrySet()) {
                                 String k = entry.getKey();
                                 LocalTime v = entry.getValue();
@@ -368,6 +368,7 @@ public class TimeCheck {
                                 } else {
                                     stnCode = Integer.parseInt(k.substring(2, 4));
                                 }
+                                
                                 if (bigger){
                                     //Retrieve the localtime for the hashmap, convert to datetime and check if the current time is before the last train time
                                     if (stnCode > Integer.parseInt(stopNoOrigin)){

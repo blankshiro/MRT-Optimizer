@@ -9,9 +9,12 @@ import datastructure.*;
  * Main application class.
  */
 public class App {
+    /** Construct the MRT map. */
     HashMap<String, List<Station>> adjMap = DataUtilities.createAdjMap();
+    /** Construct the last train timing map. */
     HashMap<String, ArrayList<HashMap<String, LocalTime>>> timeMap = TimeCheck.createTimeMap();
     int numOfStations = adjMap.size();
+    /** Constructs the graph. */
     Graph network = new Graph(numOfStations);
 
     public App() {
@@ -21,11 +24,14 @@ public class App {
         while (run) {
             System.out.println("== MRT Optimizer App ==");
             System.out.print("Please enter the starting MRT code: ");
-            String start = sc.nextLine();
+            String first = sc.nextLine();
             System.out.print("Please enter the destination MRT code: ");
-            String end = sc.nextLine();
+            String second = sc.nextLine();
             System.out.println("=============================================================================");
 
+            String start = first.toUpperCase();
+            String end = second.toUpperCase();
+          
             if (start.equals(end)) {
                 System.out.println("Please specify two different stations.");
                 break;
