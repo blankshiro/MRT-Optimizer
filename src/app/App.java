@@ -32,10 +32,14 @@ public class App {
             }
 
             if (isValid(start) && isValid(end)) {
-                System.out.println("Running Algorithm...");
-
-                LocalTime now = LocalTime.of(23,15);
+                // uncomment to test various times
                 // LocalTime now = LocalTime.of(0,15);
+                
+                // comment out when testing other times
+                LocalTime now = LocalTime.now();
+
+                System.out.println("Current Time: " + now);
+                System.out.println("Running Algorithm...");
 
                 network.solve(adjMap, start);
                 ArrayList<String> firstPath = new ArrayList<>();
