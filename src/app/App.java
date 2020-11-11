@@ -39,7 +39,7 @@ public class App {
 
             if (isValid(start) && isValid(end)) {
                 // uncomment to test various times
-                // LocalTime now = LocalTime.of(0,15);
+                // LocalTime now = LocalTime.of(23,15);
                 
                 // comment out when testing other times
                 LocalTime now = LocalTime.now();

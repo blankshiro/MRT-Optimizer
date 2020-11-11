@@ -238,8 +238,7 @@ public class TimeCheck {
      * @param now     The time now.
      * @return The ArrayList of interchanges that the user cannot use.
      */
-    public static ArrayList<String> checkInterchangeTime(ArrayList<String> arr,
-            HashMap<String, ArrayList<HashMap<String, LocalTime>>> timeMap, LocalTime now) {
+    public static ArrayList<String> checkInterchangeTime(ArrayList<String> arr, HashMap<String, ArrayList<HashMap<String, LocalTime>>> timeMap, HashMap<String, Integer> distMap, LocalTime now) {
         // get current system time - REPLACE BEFORE SUBMISSION
         // LocalTime now = LocalTime.now();
 
