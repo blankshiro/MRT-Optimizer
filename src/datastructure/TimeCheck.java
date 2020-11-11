@@ -335,6 +335,7 @@ public class TimeCheck{
                                 }
                             }
 
+                            System.out.println("timeHolder: " + timeHolder);
                             System.out.println("nowDT: " + nowDT);
                             System.out.println("valueDT: " + valueDT);
                             System.out.println("mrtStartTime: " + mrtStartTime);
@@ -366,7 +367,7 @@ public class TimeCheck{
                                     System.out.println("Bigger");
                                     //Retrieve the localtime for the hashmap, convert to datetime and check if the current time is before the last train time
                                     if (stnCode > Integer.parseInt(stopNoOrigin)){
-                                        LocalDateTime nowDT = LocalDateTime.of(today, now);
+                                        LocalDateTime nowDT = LocalDateTime.of(today, timeHolder);
                                         LocalDateTime valueDT = LocalDateTime.of(today, v);
 
                                         if (timeHolder.getHour() >= 12 && timeHolder.getHour() <=23){
@@ -385,6 +386,7 @@ public class TimeCheck{
                                             }
                                         }
 
+                                        System.out.println("timeHolder: " + timeHolder);
                                         System.out.println("nowDT: " + nowDT);
                                         System.out.println("valueDT: " + valueDT);
                                         System.out.println("mrtStartTime: " + mrtStartTime);
@@ -402,7 +404,7 @@ public class TimeCheck{
                                 } else {
                                     System.out.println("Smaller");
                                     if (stnCode < Integer.parseInt(stopNoOrigin)){
-                                        LocalDateTime nowDT = LocalDateTime.of(today, now);
+                                        LocalDateTime nowDT = LocalDateTime.of(today, timeHolder);
                                         LocalDateTime valueDT = LocalDateTime.of(today, v);
 
                                         if (timeHolder.getHour() >= 12 && timeHolder.getHour() <=23){
@@ -421,6 +423,7 @@ public class TimeCheck{
                                             }
                                         }
 
+                                        System.out.println("timeHolder: " + timeHolder);
                                         System.out.println("nowDT: " + nowDT);
                                         System.out.println("valueDT: " + valueDT);
                                         System.out.println("mrtStartTime: " + mrtStartTime);
