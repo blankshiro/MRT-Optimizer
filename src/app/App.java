@@ -24,11 +24,13 @@ public class App {
         while (run) {
             System.out.println("== MRT Optimizer App ==");
             System.out.print("Please enter the starting MRT code: ");
-            String start = sc.nextLine();
+            String first = sc.nextLine();
             System.out.print("Please enter the destination MRT code: ");
-            String end = sc.nextLine();
+            String second = sc.nextLine();
             System.out.println("=============================================================================");
 
+            String start = first.toUpperCase();
+            String end = second.toUpperCase();
             if (isValid(start) && isValid(end)) {
                 //check if the start station have trains running to begin with
                 // LocalTime now = LocalTime.now();
