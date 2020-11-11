@@ -31,12 +31,21 @@ public class App {
 
             String start = first.toUpperCase();
             String end = second.toUpperCase();
-            if (isValid(start) && isValid(end)) {
-                //check if the start station have trains running to begin with
-                // LocalTime now = LocalTime.now();
+          
+            if (start.equals(end)) {
+                System.out.println("Please specify two different stations.");
+                break;
+            }
 
-                LocalTime now = LocalTime.of(23,55);
+            if (isValid(start) && isValid(end)) {
+                // uncomment to test various times
                 // LocalTime now = LocalTime.of(0,15);
+                
+                // comment out when testing other times
+                LocalTime now = LocalTime.now();
+
+                System.out.println("Current Time: " + now);
+                System.out.println("Running Algorithm...");
 
                 network.solve(adjMap, start);
                 ArrayList<String> firstPath = new ArrayList<>();
@@ -48,11 +57,25 @@ public class App {
                 
                 if (validTime){
                     //Check time for interchanges if any
-                    failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, now);
-                    System.out.println("Failed Interchanges: " + failedInterchanges);
-                    System.out.printf("Best path from %s to %s is: ", start, end);
-                    System.out.print(firstPath);
-                    System.out.println();
+                    HashMap<String, Integer> distMap = network.getDistMap();
+                    failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, distMap, now);
+
+                    if (failedInterchanges.size() == 0) {
+                        System.out.printf("Best path from %s to %s is: ", start, end);
+                        System.out.print(firstPath);
+                        System.out.println();
+
+                        ArrayList<String> secondPath = new ArrayList<>();
+                        DataUtilities.getPath(network.getParentMap2(), start, end, end, secondPath);
+                        if (secondPath.equals(firstPath)) {
+                            System.out.println("There is no appropriate alternative path.");
+                        } else {
+                        System.out.printf("A close alternative path from %s to %s is: ", start, end);
+                        System.out.print(secondPath);
+                        System.out.println();
+                        }
+                        break;
+                    }
 
 
                     while(firstPath.size() != 0 && failedInterchanges.size() != 0){
@@ -65,20 +88,16 @@ public class App {
                         network = new Graph(numOfStations);
                         network.solve(adjMap, start);
                         DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
-                        System.out.println("Reran first path: " + firstPath);
 
                         if (firstPath.size() == 0){
                             break;
                         }
 
-                        failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, now);
-
-                        System.out.println(firstPath);
-                        System.out.println("Failed Interchanges: " + failedInterchanges);
+                        failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, distMap, now);
                     }
 
                     if (firstPath.size() != 0){
-                        System.out.printf("Best path from %s to %s is: ", start, end);
+                        System.out.printf("Best path adjusted for last train from %s to %s is: ", start, end);
                         System.out.print(firstPath);
                         System.out.println();
                     } else {
