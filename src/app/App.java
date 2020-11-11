@@ -30,7 +30,7 @@ public class App {
                 //check if the start station have trains running to begin with
                 // LocalTime now = LocalTime.now();
 
-                LocalTime now = LocalTime.of(23,25);
+                LocalTime now = LocalTime.of(23,15);
                 // LocalTime now = LocalTime.of(0,15);
 
                 network.solve(adjMap, start);
@@ -47,9 +47,26 @@ public class App {
                     // System.out.println("Network dist map:" + distMap);
                     failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, distMap, now);
                     System.out.println("Failed Interchanges: " + failedInterchanges);
-                    System.out.printf("Best path from %s to %s is: ", start, end);
-                    System.out.print(firstPath);
-                    System.out.println();
+                    // System.out.printf("Best path from %s to %s is: ", start, end);
+                    // System.out.print(firstPath);
+                    // System.out.println();
+
+                    if (failedInterchanges.size() == 0) {
+                        System.out.printf("Best path from %s to %s is: ", start, end);
+                        System.out.print(firstPath);
+                        System.out.println();
+
+                        ArrayList<String> secondPath = new ArrayList<>();
+                        DataUtilities.getPath(network.getParentMap2(), start, end, end, secondPath);
+                        if (secondPath.equals(firstPath)) {
+                            System.out.println("There is no appropriate alternative path.");
+                        } else {
+                        System.out.printf("A close alternative path from %s to %s is: ", start, end);
+                        System.out.print(secondPath);
+                        System.out.println();
+                        }
+                        break;
+                    }
 
 
                     while(firstPath.size() != 0 && failedInterchanges.size() != 0){
@@ -75,7 +92,7 @@ public class App {
                     }
 
                     if (firstPath.size() != 0){
-                        System.out.printf("Best path from %s to %s is: ", start, end);
+                        System.out.printf("Best path adjusted for last train from %s to %s is: ", start, end);
                         System.out.print(firstPath);
                         System.out.println();
                     } else {
