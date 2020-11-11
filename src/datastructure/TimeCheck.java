@@ -127,9 +127,6 @@ public class TimeCheck{
                     }
                 }
 
-                System.out.println("nowDT: " +  nowDT);
-                System.out.println("valueDT: " +  valueDT);
-
                 if (nowDT.isBefore(valueDT)){
                     madeIT = true;
                 }
@@ -153,7 +150,6 @@ public class TimeCheck{
                     }
 
                     if (bigger){
-                        System.out.println("Bigger firstStn");
                         //Retrieve the localtime for the hashmap, convert to datetime and check if the current time is before the last train time
                         if (stnCode > Integer.parseInt(stopNoOrigin)){
                             LocalDateTime nowDT = LocalDateTime.of(today, now);
@@ -172,9 +168,6 @@ public class TimeCheck{
                                 }
                             }
 
-                            System.out.println("nowDT: " +  nowDT);
-                            System.out.println("valueDT: " +  valueDT);
-
                             if (nowDT.isBefore(valueDT)){
                                 madeIT = true;
                             }
@@ -184,7 +177,6 @@ public class TimeCheck{
                             }
                         }
                     } else {
-                        System.out.println("Smaller firstStn");
                         if (stnCode < Integer.parseInt(stopNoOrigin)){
                             LocalDateTime nowDT = LocalDateTime.of(today, now);
                             LocalDateTime valueDT = LocalDateTime.of(today, v);
@@ -201,9 +193,6 @@ public class TimeCheck{
                                     valueDT = valueDT.minusDays(1);
                                 }
                             }
-
-                            System.out.println("nowDT: " +  nowDT);
-                            System.out.println("valueDT: " +  valueDT);
 
                             if (nowDT.isBefore(valueDT)){
                                 madeIT = true;
@@ -271,17 +260,12 @@ public class TimeCheck{
             int timeTaken = distMap.get(destinationStation);
 
             timeHolder = timeHolder.plusSeconds(timeTaken);
-            System.out.println("Time Holder: " + timeHolder);
 
-            System.out.println("Checking Interchange: " + checkingInterchanges);
             //now checking all the interchanges
             for (int j = 2; j < checkingInterchanges.size(); j+=2){
                 if (j + 1 < checkingInterchanges.size()){
                     String origin = checkingInterchanges.get(j);
                     String destination = checkingInterchanges.get(j+1);
-
-                    System.out.println("origin: " + origin);
-                    System.out.println("destination: " + destination);
 
                     //on the first interchange
                     if (j >= 4){
@@ -334,11 +318,6 @@ public class TimeCheck{
                                     valueDT = valueDT.minusDays(1);
                                 }
                             }
-
-                            System.out.println("timeHolder: " + timeHolder);
-                            System.out.println("nowDT: " + nowDT);
-                            System.out.println("valueDT: " + valueDT);
-                            System.out.println("mrtStartTime: " + mrtStartTime);
         
                             if (nowDT.isBefore(valueDT)){
                                 madeIT = true;
@@ -350,7 +329,6 @@ public class TimeCheck{
         
                         } else {
                             HashMap<String,LocalTime> tempHash = temp.get(l);
-                            System.out.println("tempHash: " + tempHash);
                             for (Map.Entry<String, LocalTime> entry : tempHash.entrySet()) {
                                 String k = entry.getKey();
                                 LocalTime v = entry.getValue();
@@ -364,20 +342,16 @@ public class TimeCheck{
                                 }
         
                                 if (bigger){
-                                    System.out.println("Bigger");
                                     //Retrieve the localtime for the hashmap, convert to datetime and check if the current time is before the last train time
                                     if (stnCode > Integer.parseInt(stopNoOrigin)){
                                         LocalDateTime nowDT = LocalDateTime.of(today, timeHolder);
                                         LocalDateTime valueDT = LocalDateTime.of(today, v);
 
                                         if (timeHolder.getHour() >= 12 && timeHolder.getHour() <=23){
-                                            System.out.println("Im in");
-                                            if (v.getHour() >= 0 && v.getHour() < 12){
-                                                System.out.println("Im in x2");                  
+                                            if (v.getHour() >= 0 && v.getHour() < 12){              
                                                 valueDT = valueDT.plusDays(1);
                                                 mrtStartTime = mrtStartTime.plusDays(1);
                                             } else {
-                                                System.out.println("Im in x1/2");    
                                                 mrtStartTime = mrtStartTime.plusDays(1);
                                             }
                                         } else if (timeHolder.getHour() < 12 && timeHolder.getHour() >= 0){
@@ -386,35 +360,24 @@ public class TimeCheck{
                                             }
                                         }
 
-                                        System.out.println("timeHolder: " + timeHolder);
-                                        System.out.println("nowDT: " + nowDT);
-                                        System.out.println("valueDT: " + valueDT);
-                                        System.out.println("mrtStartTime: " + mrtStartTime);
-
                                         if (nowDT.isBefore(valueDT)){
-                                            System.out.println("is it tho");
                                             madeIT = true;
                                         }
             
                                         if (nowDT.isAfter(mrtStartTime)){
-                                            System.out.println("is it tho x 2");
                                             madeIT = true;
                                         }
                                     }
                                 } else {
-                                    System.out.println("Smaller");
                                     if (stnCode < Integer.parseInt(stopNoOrigin)){
                                         LocalDateTime nowDT = LocalDateTime.of(today, timeHolder);
                                         LocalDateTime valueDT = LocalDateTime.of(today, v);
 
                                         if (timeHolder.getHour() >= 12 && timeHolder.getHour() <=23){
-                                            System.out.println("Im in");
-                                            if (v.getHour() >= 0 && v.getHour() < 12){
-                                                System.out.println("Im in x2");                  
+                                            if (v.getHour() >= 0 && v.getHour() < 12){               
                                                 valueDT = valueDT.plusDays(1);
                                                 mrtStartTime = mrtStartTime.plusDays(1);
-                                            } else {
-                                                System.out.println("Im in x1/2");    
+                                            } else {   
                                                 mrtStartTime = mrtStartTime.plusDays(1);
                                             }
                                         } else if (timeHolder.getHour() < 12 && timeHolder.getHour() >= 0){
@@ -422,11 +385,6 @@ public class TimeCheck{
                                                 valueDT = valueDT.minusDays(1);
                                             }
                                         }
-
-                                        System.out.println("timeHolder: " + timeHolder);
-                                        System.out.println("nowDT: " + nowDT);
-                                        System.out.println("valueDT: " + valueDT);
-                                        System.out.println("mrtStartTime: " + mrtStartTime);
     
                                         if (nowDT.isBefore(valueDT)){
                                             madeIT = true;

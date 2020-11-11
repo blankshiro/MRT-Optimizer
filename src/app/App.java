@@ -27,8 +27,7 @@ public class App {
             System.out.println("=============================================================================");
 
             if (isValid(start) && isValid(end)) {
-                //check if the start station have trains running to begin with
-                // LocalTime now = LocalTime.now();
+                System.out.println("Running Algorithm...");
 
                 LocalTime now = LocalTime.of(23,15);
                 // LocalTime now = LocalTime.of(0,15);
@@ -44,12 +43,7 @@ public class App {
                 if (validTime){
                     //Check time for interchanges if any
                     HashMap<String, Integer> distMap = network.getDistMap();
-                    // System.out.println("Network dist map:" + distMap);
                     failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, distMap, now);
-                    System.out.println("Failed Interchanges: " + failedInterchanges);
-                    // System.out.printf("Best path from %s to %s is: ", start, end);
-                    // System.out.print(firstPath);
-                    // System.out.println();
 
                     if (failedInterchanges.size() == 0) {
                         System.out.printf("Best path from %s to %s is: ", start, end);
@@ -79,16 +73,12 @@ public class App {
                         network = new Graph(numOfStations);
                         network.solve(adjMap, start);
                         DataUtilities.getPath(network.getParentMap(), start, end, end, firstPath);
-                        System.out.println("Reran first path: " + firstPath);
 
                         if (firstPath.size() == 0){
                             break;
                         }
 
                         failedInterchanges = TimeCheck.checkInterchangeTime(firstPath, timeMap, distMap, now);
-
-                        System.out.println(firstPath);
-                        System.out.println("Failed Interchanges: " + failedInterchanges);
                     }
 
                     if (firstPath.size() != 0){
