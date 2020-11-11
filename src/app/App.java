@@ -9,9 +9,12 @@ import datastructure.*;
  * Main application class.
  */
 public class App {
+    /** Construct the MRT map. */
     HashMap<String, List<Station>> adjMap = DataUtilities.createAdjMap();
+    /** Construct the last train timing map. */
     HashMap<String, ArrayList<HashMap<String, LocalTime>>> timeMap = TimeCheck.createTimeMap();
     int numOfStations = adjMap.size();
+    /** Constructs the graph. */
     Graph network = new Graph(numOfStations);
 
     public App() {
