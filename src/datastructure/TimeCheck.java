@@ -43,7 +43,7 @@ public class TimeCheck{
         return m;
     }
     
-        /**
+    /**
      * For Junit testing purposes.
      */
     public static HashMap<String, ArrayList<HashMap<String, LocalTime>>> createTimeMapTest() {
