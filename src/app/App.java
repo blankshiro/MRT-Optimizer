@@ -26,6 +26,11 @@ public class App {
             String end = sc.nextLine();
             System.out.println("=============================================================================");
 
+            if (start.equals(end)) {
+                System.out.println("Please specify two different stations.");
+                break;
+            }
+
             if (isValid(start) && isValid(end)) {
                 System.out.println("Running Algorithm...");
 
